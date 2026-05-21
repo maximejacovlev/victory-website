@@ -1,0 +1,78 @@
+<section class="hero" data-screen-label="01 Hero">
+  <div class="hero-bg"></div>
+  <div class="hero-photo {% if section.settings.image != blank %}has-image{% endif %}">
+    {%- if section.settings.image != blank -%}
+      <img src="{{ section.settings.image | image_url: width: 2400 }}" alt="" loading="eager">
+    {%- endif -%}
+  </div>
+  <div class="hero-grain"></div>
+  <div class="hero-vignette"></div>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow eyebrow">
+      <span class="dot"></span>
+      <span>{{ section.settings.eyebrow }}</span>
+    </div>
+
+    <h1 class="display hero-title h-xl">
+      {%- if section.settings.heading_line_1 != blank -%}
+        <span class="line"><span>{{ section.settings.heading_line_1 }}</span></span>
+      {%- endif -%}
+      {%- if section.settings.heading_line_2 != blank -%}
+        <span class="line"><span>{{ section.settings.heading_line_2 }}</span></span>
+      {%- endif -%}
+      {%- if section.settings.heading_line_3 != blank -%}
+        <span class="line"><span>{{ section.settings.heading_line_3 }}</span></span>
+      {%- endif -%}
+    </h1>
+
+    <div class="hero-foot">
+      <p>{{ section.settings.body }}</p>
+      <div class="hero-meta">
+        <span class="k">{{ section.settings.meta_label }}</span>
+        <span class="v">{{ section.settings.meta_value }}</span>
+      </div>
+      {%- if section.settings.cta_text != blank -%}
+        <a href="{{ section.settings.cta_link }}" class="cta cta--ghost">
+          <span>{{ section.settings.cta_text }}</span>
+          <span class="arrow">→</span>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.marquee_text != blank -%}
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>
+          {%- assign parts = section.settings.marquee_text | split: '·' -%}
+          {%- for i in (1..2) -%}
+            {%- for p in parts -%}
+              {{ p | strip }} <i>✦</i>
+            {%- endfor -%}
+          {%- endfor -%}
+        </span>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Background image (optional)", "info": "If empty, an animated vineyard gradient is used." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Maison Aurore — Est. 2019, Provence" },
+    { "type": "text", "id": "heading_line_1", "label": "Heading line 1", "default": "<em>Slow</em>-made" },
+    { "type": "text", "id": "heading_line_2", "label": "Heading line 2", "default": "rosé &amp;" },
+    { "type": "text", "id": "heading_line_3", "label": "Heading line 3", "default": "botanical gin." },
+    { "type": "textarea", "id": "body", "label": "Body copy" },
+    { "type": "text", "id": "meta_label", "label": "Meta label", "default": "Now Pouring" },
+    { "type": "text", "id": "meta_value", "label": "Meta value", "default": "Cuvée N°7 — Rosé 2024" },
+    { "type": "text", "id": "cta_text", "label": "CTA text", "default": "Shop the collection" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" },
+    { "type": "text", "id": "marquee_text", "label": "Marquee (· separated)", "default": "Small batch · Hand-bottled · Provence, France · Sustainable farming · Cuvée N°7 — Now pouring" }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

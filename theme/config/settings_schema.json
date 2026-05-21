@@ -1,0 +1,37 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Aurore",
+    "theme_version": "1.0.0",
+    "theme_author": "Aurore Maison",
+    "theme_documentation_url": "https://shopify.dev",
+    "theme_support_url": "https://shopify.dev"
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "header",
+        "content": "Palette"
+      },
+      {
+        "type": "paragraph",
+        "content": "Palette is fixed in `assets/theme.css` (--bone, --wine, --ink). Override there if you want different brand colors."
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Type is loaded from Google Fonts (Cormorant Garamond + Manrope + JetBrains Mono). Swap in `layout/theme.liquid` if you license a different family."
+      }
+    ]
+  }
+]

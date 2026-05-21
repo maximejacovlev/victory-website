@@ -1,0 +1,51 @@
+<section class="section process" id="process" data-screen-label="04 Process">
+  <div class="container">
+    <div class="process-head reveal">
+      <h2 class="h-l">{{ section.settings.heading }}</h2>
+      <p class="body-l">{{ section.settings.intro }}</p>
+    </div>
+
+    <div class="process-grid">
+      {%- for block in section.blocks -%}
+        <div class="step reveal d{{ forloop.index }}" {{ block.shopify_attributes }}>
+          <div class="glyph">{{ block.settings.glyph }}</div>
+          <span class="num">{{ block.settings.number }}</span>
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.body }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Process",
+  "settings": [
+    { "type": "html", "id": "heading", "label": "Heading", "default": "From <em>vine</em><br>to vessel." },
+    { "type": "textarea", "id": "intro", "label": "Intro copy" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "glyph", "label": "Glyph (e.g. i, ii, iii)", "default": "i" },
+        { "type": "text", "id": "number", "label": "Step label", "default": "01 · Select" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Old-vine fruit." },
+        { "type": "textarea", "id": "body", "label": "Body copy" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [{
+    "name": "Process",
+    "blocks": [
+      { "type": "step" },
+      { "type": "step" },
+      { "type": "step" },
+      { "type": "step" }
+    ]
+  }]
+}
+{% endschema %}

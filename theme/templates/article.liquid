@@ -1,0 +1,16 @@
+<article class="section">
+  <div class="container" style="max-width:780px">
+    <div class="eyebrow" style="opacity:.5;margin-bottom:24px">
+      <a href="{{ blog.url }}">{{ blog.title }}</a> · {{ article.published_at | date: '%d %B %Y' }}
+    </div>
+    <h1 class="h-l" style="margin-bottom:48px">{{ article.title }}</h1>
+
+    {%- if article.image -%}
+      <img src="{{ article.image | image_url: width: 1600 }}" alt="{{ article.title | escape }}" style="width:100%;border-radius:14px;margin-bottom:48px">
+    {%- endif -%}
+
+    <div class="body-l" style="font-size:18px;line-height:1.7">
+      {{ article.content }}
+    </div>
+  </div>
+</article>

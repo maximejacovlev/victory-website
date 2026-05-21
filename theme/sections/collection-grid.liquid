@@ -1,0 +1,34 @@
+<section class="section collection" id="shop" data-screen-label="02 Shop">
+  <div class="container">
+    <div class="collection-head reveal">
+      <h2 class="h-l lead">{{ section.settings.heading }}</h2>
+      <span class="meta">{{ section.settings.meta }}</span>
+    </div>
+
+    <div class="products">
+      {%- assign collection_obj = collections[section.settings.collection] -%}
+      {%- if collection_obj and collection_obj.products.size > 0 -%}
+        {%- for product in collection_obj.products limit: section.settings.product_limit -%}
+          {%- render 'product-card', product: product, index: forloop.index -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Fallback placeholder cards if no collection selected yet {%- endcomment -%}
+        {%- render 'product-card-placeholder', kind: 'wine' -%}
+        {%- render 'product-card-placeholder', kind: 'gin' -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection grid",
+  "settings": [
+    { "type": "html", "id": "heading", "label": "Heading", "default": "The <em>Collection</em>.<br>Two bottles, made with patience." },
+    { "type": "text", "id": "meta", "label": "Side meta", "default": "02 — Catalogue" },
+    { "type": "collection", "id": "collection", "label": "Collection to display" },
+    { "type": "range", "id": "product_limit", "label": "Products to show", "min": 2, "max": 8, "step": 1, "default": 2 }
+  ],
+  "presets": [{ "name": "Collection grid" }]
+}
+{% endschema %}

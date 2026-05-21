@@ -1,0 +1,1330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Victory. — The beverage only winners drink</title>
+<meta name="description" content="Victory. — Rosé, Gin, Rouge, Blanc. The beverage only winners drink. Crafted in St. Tropez and Sancerre, made for those who never settle." />
+<link rel="icon" href="assets/favicon.png" type="image/png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/site.css">
+
+<style>
+/* ---------- HERO ---------- */
+.hero{
+  position:relative; min-height:100vh; min-height:100svh;
+  overflow:hidden; color:var(--bone);
+  background:var(--olive-deep);
+}
+.hero-bg{
+  position:absolute; inset:0;
+  background:
+    radial-gradient(120% 80% at 50% 100%, rgba(74,78,44,.85) 0%, rgba(0,0,0,0) 60%),
+    radial-gradient(80% 60% at 20% 20%, rgba(240,233,217,.10) 0%, rgba(0,0,0,0) 50%),
+    linear-gradient(180deg, #3a3d22 0%, #25281a 50%, #11120a 100%);
+}
+/* Stripe motif from the bottle label as a faint hero texture */
+.hero-stripes{
+  position:absolute; inset:0; opacity:.10; pointer-events:none;
+  background-image: repeating-linear-gradient(90deg,
+    var(--bone) 0 1px, transparent 1px 60px);
+}
+.hero-vignette{position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 40%, transparent 50%, rgba(0,0,0,.55) 100%)}
+
+.hero-inner{
+  position:relative; z-index:2;
+  padding: 18vh var(--gutter) 12vh;
+  display:grid; grid-template-columns: 1.1fr 1fr; gap:48px;
+  min-height:100vh; min-height:100svh;
+  align-items:center;
+}
+@media (max-width:960px){
+  .hero-inner{grid-template-columns:1fr; padding-top:24vh}
+}
+
+.hero-text{}
+.hero-eyebrow{
+  display:flex; align-items:center; gap:14px;
+  opacity:.85; margin-bottom:32px;
+}
+.hero-eyebrow .dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+.hero-title{max-width:14ch}
+.hero-title .line{display:block; overflow:hidden}
+.hero-title .line span{display:block; transform:translateY(110%); animation: rise 1.1s cubic-bezier(.2,.7,.1,1) forwards}
+.hero-title .line:nth-child(2) span{animation-delay:.12s}
+.hero-title .line:nth-child(3) span{animation-delay:.24s}
+@keyframes rise{to{transform:translateY(0)}}
+
+.hero-tagline{
+  font-family:var(--serif); font-style:italic;
+  font-size:clamp(20px, 2.2vw, 28px);
+  margin-top:36px; color:rgba(240,233,217,.85);
+  max-width:32ch; line-height:1.35;
+}
+
+.hero-actions{display:flex; gap:14px; margin-top:48px; flex-wrap:wrap; align-items:center; opacity:0; animation:fade 1s ease .9s forwards}
+@keyframes fade{to{opacity:1}}
+.hero-meta{margin-top:48px; display:grid; grid-template-columns:auto auto auto; gap:32px; opacity:0; animation:fade 1s ease 1.1s forwards}
+.hero-meta .k{font-family:var(--mono); font-size:10px; letter-spacing:.22em; text-transform:uppercase; opacity:.55; display:block; margin-bottom:6px}
+.hero-meta .v{font-family:var(--serif); font-style:italic; font-size:20px}
+
+/* ---------- HERO CAROUSEL (abstract label cards) ---------- */
+.hero-carousel{
+  position:relative;
+  aspect-ratio: 3/4;
+  border-radius:8px;
+  overflow:visible;
+  isolation:isolate;
+  display:flex; align-items:center; justify-content:center;
+  transform:rotate(-3deg);
+  filter: drop-shadow(0 40px 60px rgba(0,0,0,.5));
+}
+
+.hc-slide{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  padding:36px 20px;
+  opacity:0; pointer-events:none;
+  border-radius:6px;
+  transition: opacity .9s cubic-bezier(.2,.7,.1,1), transform 1.6s cubic-bezier(.2,.7,.1,1);
+}
+.hc-slide.active{opacity:1; pointer-events:auto; z-index:2}
+
+/* Slide stripe wrapper — outer label */
+.hc-stripes{
+  position:relative; width:78%; height:90%;
+  display:flex; align-items:center; justify-content:center;
+  padding:34px 18px;
+  border-radius:6px;
+  overflow:hidden;
+}
+/* Inner dark panel — the actual label */
+.hc-inner{
+  position:relative;
+  width:100%; height:100%;
+  display:flex; flex-direction:column; align-items:center; justify-content:space-between;
+  padding:36px 22px 28px;
+  border-radius:4px;
+  text-align:center;
+  isolation:isolate;
+}
+.hc-v{
+  font-family:var(--serif); font-weight:500;
+  font-size:clamp(80px, 14vw, 180px); line-height:.85; letter-spacing:-.02em;
+}
+.hc-mid{display:flex; flex-direction:column; gap:6px; align-items:center}
+.hc-mid .word{
+  font-family:"Cormorant Garamond", serif; font-weight:500; letter-spacing:.18em;
+  font-size:clamp(20px, 2vw, 26px); text-transform:uppercase;
+}
+.hc-mid .kind{font-family:var(--serif); font-style:italic; font-size:clamp(28px, 3vw, 38px); line-height:1}
+.hc-mid .place{font-family:var(--serif); font-style:italic; font-size:clamp(16px, 1.4vw, 20px); opacity:.9}
+.hc-foot{
+  font-family:var(--serif); font-weight:500;
+  font-size:clamp(10px, 1vw, 12px); letter-spacing:.14em; line-height:1.4;
+  max-width:20ch;
+}
+
+/* Theme variants matching each bottle label */
+.hc-slide[data-theme="rose"] .hc-stripes{
+  background-image: repeating-linear-gradient(90deg,
+    var(--olive) 0 16px, var(--bone) 16px 32px);
+}
+.hc-slide[data-theme="rose"] .hc-inner{
+  background:var(--olive-deep); color:#dba99a;
+}
+.hc-slide[data-theme="rose"] .hc-foot{color:#dba99a}
+
+.hc-slide[data-theme="gin"] .hc-stripes{
+  background-image: repeating-linear-gradient(90deg,
+    var(--olive) 0 16px, var(--bone) 16px 32px);
+}
+.hc-slide[data-theme="gin"] .hc-inner{
+  background:#3a4321; color:var(--bone);
+}
+.hc-slide[data-theme="gin"] .hc-foot{color:var(--bone)}
+
+.hc-slide[data-theme="rouge"] .hc-stripes{
+  background:#0e0907;
+}
+.hc-slide[data-theme="rouge"] .hc-inner{
+  background:#0e0907; color:#f5efe0;
+  border:1px solid rgba(245,239,224,.08);
+}
+.hc-slide[data-theme="rouge"] .hc-v{color:#f5efe0}
+.hc-slide[data-theme="rouge"] .hc-mid .word{color:#f5efe0}
+.hc-slide[data-theme="rouge"] .hc-mid .kind{color:#a8201a; font-family:"Cormorant Garamond", serif; font-style:italic}
+.hc-slide[data-theme="rouge"] .hc-mid .place{color:#f5efe0; opacity:.7; font-style:normal; letter-spacing:.18em; text-transform:uppercase; font-size:11px; font-family:var(--serif)}
+.hc-slide[data-theme="rouge"] .hc-foot{color:#f5efe0; opacity:.8}
+
+.hc-slide[data-theme="blanc"] .hc-stripes{
+  background:#0e0907;
+}
+.hc-slide[data-theme="blanc"] .hc-inner{
+  background:#0e0907; color:#f5efe0;
+  border:1px solid rgba(245,239,224,.08);
+}
+.hc-slide[data-theme="blanc"] .hc-v{color:#c9a85a}
+.hc-slide[data-theme="blanc"] .hc-mid .word{color:#f5efe0}
+.hc-slide[data-theme="blanc"] .hc-mid .kind{color:#c9a85a; font-family:"Cormorant Garamond", serif; font-style:italic}
+.hc-slide[data-theme="blanc"] .hc-mid .place{color:#f5efe0; opacity:.7; font-style:normal; letter-spacing:.18em; text-transform:uppercase; font-size:11px; font-family:var(--serif)}
+.hc-slide[data-theme="blanc"] .hc-foot{color:#f5efe0; opacity:.8}
+
+/* Transition variants */
+.hero-carousel[data-transition="fade"] .hc-slide{transform:none}
+.hero-carousel[data-transition="slide"] .hc-slide{transform:translateX(40px)}
+.hero-carousel[data-transition="slide"] .hc-slide.active{transform:translateX(0)}
+.hero-carousel[data-transition="scale"] .hc-slide{transform:scale(1.06)}
+.hero-carousel[data-transition="scale"] .hc-slide.active{transform:scale(1)}
+
+/* nav controls — kept outside the rotated card so they stay readable */
+.hc-nav{
+  position:absolute; left:0; right:0; bottom:-46px;
+  display:flex; align-items:center; justify-content:center; gap:14px;
+  z-index:6;
+  transform:rotate(3deg);
+  color:var(--bone);
+}
+.hc-arrow{
+  width:38px; height:38px; border-radius:999px;
+  background:rgba(20,18,12,.45); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(255,255,255,.2);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  cursor:pointer; transition: background .25s, transform .25s;
+}
+.hc-arrow:hover{background:rgba(20,18,12,.7); transform:scale(1.06)}
+.hc-dots{display:flex; gap:8px}
+.hc-dots button{
+  width:8px; height:8px; border-radius:999px; padding:0;
+  background:rgba(255,255,255,.35); border:none; cursor:pointer;
+  transition: background .25s, width .25s;
+}
+.hc-dots button.active{background:#fff; width:24px}
+
+.hero-carousel[data-show-arrows="false"] .hc-arrow{display:none}
+.hero-carousel[data-show-dots="false"] .hc-dots{display:none}
+
+/* Marquee */
+.marquee{
+  position:absolute; bottom:0; left:0; right:0;
+  border-top:1px solid var(--rule-light);
+  overflow:hidden; padding:14px 0;
+  background:rgba(0,0,0,.18); backdrop-filter:blur(6px);
+  font-family:var(--mono); font-size:11px; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--bone);
+  z-index:2;
+}
+.marquee-track{display:flex; gap:48px; white-space:nowrap; animation: marq 38s linear infinite; width:max-content}
+.marquee-track span{display:inline-flex; align-items:center; gap:48px}
+.marquee-track i{font-style:normal; opacity:.5}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* ---------- COLLECTION (4 products) ---------- */
+.collection{background:var(--bone)}
+.collection-head{
+  display:grid; grid-template-columns: 1fr auto; align-items:end; gap:24px;
+  padding-bottom: 56px;
+}
+.collection-head .lead{ max-width: 22ch; }
+.collection-head .meta{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; opacity:.55}
+
+.products{
+  display:grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+}
+@media (max-width:1100px){ .products{grid-template-columns:repeat(2,1fr); gap:24px} }
+@media (max-width:560px){ .products{grid-template-columns:1fr} }
+
+.product{
+  position:relative;
+  background:var(--cream);
+  border:1px solid var(--rule);
+  border-radius: 14px;
+  overflow:hidden;
+  display:flex; flex-direction:column;
+  transition: transform .5s cubic-bezier(.2,.7,.1,1), box-shadow .5s, border-color .5s;
+}
+.product:hover{ transform:translateY(-6px); box-shadow:0 30px 60px -30px rgba(45,48,24,.35); border-color:var(--olive)}
+
+.product-media{
+  position:relative; aspect-ratio: 1/1.05;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+  background:var(--cream);
+}
+.product-media .ph{position:absolute; inset:0;
+  background:
+    radial-gradient(60% 50% at 50% 35%, rgba(255,255,255,.6), transparent 70%);
+}
+.product-media img{
+  position:relative; z-index:1;
+  width:100%; height:100%; object-fit:contain;
+  transition: transform .8s cubic-bezier(.2,.7,.1,1);
+}
+.product:hover .product-media img{ transform: translateY(-6px) scale(1.03)}
+
+/* product tonal washes (subtle, behind the bottle) */
+.product--rose  .product-media{background:linear-gradient(170deg, #f5e2d8 0%, #e8c1ad 100%)}
+.product--gin   .product-media{background:linear-gradient(170deg, #dde1d3 0%, #b4bca0 100%)}
+.product--rouge .product-media{background:linear-gradient(170deg, #2a1818 0%, #0c0606 100%)}
+.product--blanc .product-media{background:linear-gradient(170deg, #f1ecdf 0%, #d8cea8 100%)}
+
+.product-body{
+  padding: 24px 24px 26px;
+  display:flex; flex-direction:column; gap:6px;
+  background:var(--cream);
+  border-top:1px solid var(--rule);
+}
+.product-name{font-family:var(--serif); font-size:30px; line-height:1.0; letter-spacing:-.01em}
+.product-name em{font-style:italic; font-weight:300}
+.product-sub{font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.55; margin-top:4px}
+.product-row{display:flex; justify-content:space-between; align-items:center; margin-top:18px; padding-top:16px; border-top:1px solid var(--rule)}
+.product-price{font-family:var(--serif); font-size:22px}
+.add-btn{
+  display:inline-flex; align-items:center; gap:10px;
+  padding:11px 16px; border-radius:999px;
+  background:var(--ink); color:var(--bone);
+  font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+  transition: background .3s, transform .3s;
+}
+.add-btn:hover{ background:var(--olive); transform:scale(1.03)}
+.add-btn .plus{transition:transform .3s; display:inline-block}
+.add-btn:hover .plus{transform:rotate(90deg)}
+
+/* ---------- WHY STRIP (4 lifestyle image cards) ---------- */
+.why{background:var(--olive-deep); color:var(--bone); padding: clamp(80px, 12vh, 140px) var(--gutter)}
+.why-head{display:flex; justify-content:space-between; align-items:end; gap:32px; padding-bottom:48px}
+.why-head h2{max-width:18ch}
+.why-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px}
+@media (max-width:1100px){.why-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.why-grid{grid-template-columns:1fr}}
+
+.why-card{
+  position:relative; aspect-ratio:1/1;
+  border-radius:22px; overflow:hidden;
+  display:flex; flex-direction:column;
+  padding:22px;
+  isolation:isolate;
+  transition: transform .5s cubic-bezier(.2,.7,.1,1);
+}
+.why-card:hover{transform:translateY(-6px)}
+.why-card img.why-img{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  z-index:-2;
+  transition: transform 1.2s cubic-bezier(.2,.7,.1,1);
+}
+.why-card:hover img.why-img{transform:scale(1.04)}
+/* gradient overlay to ensure quote legibility */
+.why-card:after{
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background:linear-gradient(180deg, rgba(0,0,0,.20) 0%, rgba(0,0,0,0) 55%, rgba(0,0,0,.35) 100%);
+}
+
+.why-card .why-eyebrow{
+  font-family:var(--serif); font-style:italic;
+  font-size:clamp(28px, 2.6vw, 38px); line-height:1; letter-spacing:-.005em;
+  color:#fff;
+  text-shadow:0 2px 14px rgba(0,0,0,.35);
+}
+.why-card .why-q{
+  margin-top:14px; align-self:flex-start;
+  font-family:var(--serif); font-style:italic;
+  font-size:clamp(18px, 1.45vw, 22px); line-height:1.2;
+  color:#fff;
+  background:rgba(20,18,12,.32);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  border:1px solid rgba(255,255,255,.18);
+  padding:14px 16px;
+  border-radius:14px;
+  max-width:100%;
+  text-wrap:pretty;
+}
+.why-card .why-q em{font-style:italic}
+.why-card .why-bottom{margin-top:auto; display:flex; justify-content:space-between; align-items:flex-end; gap:12px}
+.why-card .why-name{
+  font-family:var(--mono); font-size:10px; letter-spacing:.22em; text-transform:uppercase;
+  color:rgba(255,255,255,.92); text-shadow:0 2px 10px rgba(0,0,0,.45);
+}
+.why-card .why-arrow{
+  width:36px; height:36px; border-radius:999px;
+  background:rgba(255,255,255,.18); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  backdrop-filter: blur(8px);
+  border:1px solid rgba(255,255,255,.25);
+  transition: background .3s, transform .3s;
+}
+.why-card:hover .why-arrow{background:rgba(255,255,255,.32); transform:translateX(4px)}
+
+/* ---------- STORY ---------- */
+.story{ background:var(--olive); color:var(--bone); }
+.story .row{align-items:center; gap:48px}
+.story-copy{grid-column: 2/7}
+.story-art{grid-column: 8/13; position:relative}
+.story h2{margin-bottom:32px}
+.story p{font-size:18px; line-height:1.55; color:rgba(240,233,217,.88); max-width:38ch}
+.story .signature{margin-top:48px; font-family:var(--serif); font-style:italic; font-size:32px}
+.story .signature small{display:block; font-family:var(--mono); font-style:normal; font-size:11px; letter-spacing:.2em; text-transform:uppercase; opacity:.6; margin-top:6px}
+
+.story-art .frame{
+  aspect-ratio: 4/5; border-radius: 280px 280px 14px 14px;
+  background-image: repeating-linear-gradient(90deg,
+    var(--olive-deep) 0 28px, var(--bone) 28px 56px);
+  overflow:hidden; position:relative;
+  border:1px solid rgba(240,233,217,.15);
+  display:flex; align-items:flex-end; justify-content:center;
+  padding-bottom:32px;
+}
+.story-art .frame .group-shot{
+  display:flex; align-items:flex-end; justify-content:center; gap:-12px;
+  width:88%;
+}
+.story-art .frame .group-shot img{
+  height:auto; max-height:90%; width:auto;
+  filter: drop-shadow(0 18px 28px rgba(0,0,0,.4));
+}
+.story-art .frame .group-shot img:nth-child(1){width:30%; margin-right:-10%; transform:translateY(20px); z-index:1}
+.story-art .frame .group-shot img:nth-child(2){width:34%; z-index:2}
+.story-art .frame .group-shot img:nth-child(3){width:30%; margin-left:-10%; transform:translateY(15px); z-index:1}
+
+.story-art .badge{
+  position:absolute; top:24px; left:24px;
+  width:108px; height:108px; border-radius:50%;
+  background:var(--bone); color:var(--olive-deep);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  font-family:var(--serif); font-style:italic; font-size:15px;
+  text-align:center; line-height:1.1;
+  animation: spin 24s linear infinite;
+  z-index:3;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.story-art .badge .y{font-family:var(--mono); font-style:normal; font-size:9px; letter-spacing:.2em; margin-top:4px; text-transform:uppercase}
+
+@media (max-width:860px){
+  .story-copy, .story-art{grid-column:1/-1}
+}
+
+/* ---------- CREATOR / INSTAGRAM ---------- */
+.maker{background:var(--cream); padding-top: clamp(80px, 12vh, 140px)}
+.maker-grid{
+  display:grid; grid-template-columns: 1fr 1.1fr; gap:64px;
+  align-items:center;
+}
+@media (max-width:960px){
+  .maker-grid{grid-template-columns:1fr; gap:48px}
+}
+
+.maker-portrait{
+  position:relative;
+  aspect-ratio: 4/5;
+  border-radius: 240px 240px 14px 14px;
+  overflow:hidden;
+  background:var(--olive-deep);
+}
+.maker-portrait .portrait-img{
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:cover;
+}
+.maker-portrait .badge-stamp{
+  position:absolute; bottom:24px; right:24px;
+  width:108px; height:108px; border-radius:50%;
+  background:var(--bone); color:var(--olive-deep);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif); font-style:italic; font-size:16px;
+  text-align:center; line-height:1.05;
+  box-shadow: 0 10px 30px rgba(0,0,0,.18);
+  animation: spin 22s linear infinite;
+}
+
+.maker-signature{
+  margin-top:40px;
+  display:flex; flex-direction:column; gap:6px;
+  padding-top:24px; border-top:1px solid var(--rule);
+  max-width:32ch;
+}
+.maker-signature .sig-name{font-family:var(--mono); font-size:10px; letter-spacing:.22em; text-transform:uppercase; opacity:.55}
+.maker-signature .sig-name-italic{font-family:var(--serif); font-style:italic; font-size:28px}
+
+/* Instagram block */
+.ig-block{margin-top: clamp(80px, 12vh, 140px); padding-top:48px; border-top:1px solid var(--rule)}
+.ig-head{display:flex; justify-content:space-between; align-items:end; gap:32px; padding-bottom:32px}
+.ig-handle{
+  display:inline-flex; align-items:center; gap:12px;
+  font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+  padding:14px 22px; border-radius:999px;
+  background:var(--ink); color:var(--bone);
+  transition: background .3s, padding-right .3s;
+}
+.ig-handle:hover{background:var(--olive); padding-right:32px}
+.ig-handle .arrow{transition:transform .3s}
+.ig-handle:hover .arrow{transform:translateX(4px)}
+.ig-icon{flex:none}
+
+.ig-grid{display:grid; grid-template-columns:repeat(4, 1fr); gap:12px}
+@media (max-width:960px){.ig-grid{grid-template-columns:repeat(2,1fr); gap:12px}}
+@media (max-width:560px){.ig-grid{grid-template-columns:repeat(2,1fr); gap:8px}}
+
+.ig-tile{
+  position:relative; aspect-ratio:4/5;
+  overflow:hidden; border-radius:12px;
+  background:var(--bone-2);
+  isolation:isolate;
+  transition: transform .5s cubic-bezier(.2,.7,.1,1);
+}
+.ig-tile:hover{transform:translateY(-3px)}
+.ig-tile img, .ig-tile video{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  transition: transform 1.2s cubic-bezier(.2,.7,.1,1), filter .35s;
+}
+.ig-tile:hover img, .ig-tile:hover video{transform:scale(1.06); filter:brightness(.85)}
+.ig-overlay{
+  position:absolute; inset:0;
+  display:flex; align-items:flex-end; justify-content:space-between; gap:8px;
+  padding:14px;
+  color:#fff; font-family:var(--mono); font-size:11px; letter-spacing:.18em;
+  opacity:0; transition: opacity .35s;
+  background:linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.55) 100%);
+}
+.ig-overlay b{font-weight:500; display:inline-flex; align-items:center; gap:6px}
+.ig-overlay svg{flex:none}
+.ig-tile:hover .ig-overlay{opacity:1}
+.ig-tile .ig-reel-badge{
+  position:absolute; top:12px; right:12px; z-index:2;
+  width:30px; height:30px; border-radius:999px;
+  background:rgba(20,18,12,.55); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.2);
+}
+
+/* ---------- FEATURED PRODUCT (editorial) ---------- */
+.feature{ background:var(--cream); }.feature-card{
+  display:grid; grid-template-columns: 1.1fr 1fr; gap:0;
+  background:var(--olive-deep); color:var(--bone);
+  border-radius: 28px; overflow:hidden;
+  min-height: 620px;
+}
+.feature-media{
+  position:relative;
+  background:
+    radial-gradient(80% 60% at 50% 30%, rgba(229,160,137,.35), transparent 60%),
+    linear-gradient(180deg, var(--olive) 0%, var(--olive-deep) 100%);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+.feature-media .ring{
+  position:absolute; width:80%; aspect-ratio:1; border-radius:50%;
+  border:1px solid rgba(240,233,217,.18);
+  animation: float 8s ease-in-out infinite;
+}
+.feature-media .ring.r2{width:60%; animation-delay:-2s}
+.feature-media .ring.r3{width:40%; animation-delay:-4s}
+@keyframes float{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+.feature-media img{position:relative; z-index:2; height:80%; width:auto; filter:drop-shadow(0 30px 60px rgba(0,0,0,.55))}
+
+.feature-body{
+  padding: clamp(40px,5vw,72px);
+  display:flex; flex-direction:column; justify-content:space-between; gap:32px;
+}
+.feature-rating{display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; opacity:.9}
+.feature-rating .star{color:var(--rose)}
+.feature h2 em{font-style:italic; font-weight:300}
+.feature-specs{
+  display:grid; grid-template-columns: repeat(3,1fr);
+  border-top:1px solid rgba(240,233,217,.2);
+  border-bottom:1px solid rgba(240,233,217,.2);
+}
+.feature-specs .cell{padding:24px 0; text-align:center; border-right:1px solid rgba(240,233,217,.2)}
+.feature-specs .cell:last-child{border-right:none}
+.feature-specs .k{font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.6; display:block; margin-bottom:8px}
+.feature-specs .v{font-family:var(--serif); font-size:22px}
+
+@media (max-width:860px){
+  .feature-card{grid-template-columns:1fr}
+  .feature-media{aspect-ratio:1}
+}
+
+/* ---------- JOURNAL ---------- */
+.journal{background:var(--bone)}
+.journal-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:32px}
+.entry{display:flex; flex-direction:column; gap:18px; cursor:pointer}
+.entry-thumb{
+  aspect-ratio:4/5; border-radius:14px; overflow:hidden; position:relative;
+  background:var(--olive-deep); transition:transform .6s cubic-bezier(.2,.7,.1,1);
+}
+.entry:hover .entry-thumb{transform:scale(1.02)}
+.entry-thumb img{
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:cover;
+  transition: transform 1.2s cubic-bezier(.2,.7,.1,1);
+}
+.entry:hover .entry-thumb img{transform:scale(1.04)}
+.entry-thumb:after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,.45) 100%);
+}
+.entry-thumb .label{position:absolute; bottom:18px; left:18px; z-index:2; font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.92); text-shadow:0 2px 10px rgba(0,0,0,.5)}
+.entry-meta{display:flex; gap:14px; font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.6}
+.entry h3{font-family:var(--serif); font-size:24px; line-height:1.15; letter-spacing:-.005em}
+.entry p{font-size:14px; color:var(--ink-2); line-height:1.55}
+@media (max-width:860px){ .journal-grid{grid-template-columns:1fr} }
+
+/* ---------- NEWSLETTER ---------- */
+.newsletter{
+  background:var(--ink); color:var(--bone);
+  text-align:center;
+}
+.newsletter h2{max-width:18ch; margin:0 auto 24px}
+.newsletter p{max-width:46ch; margin:0 auto 40px; color:rgba(240,233,217,.7); font-size:16px}
+.nl-form{
+  display:flex; max-width:520px; margin:0 auto;
+  border:1px solid rgba(240,233,217,.25); border-radius:999px; padding:6px; gap:6px;
+  background:rgba(240,233,217,.04);
+}
+.nl-form input{
+  flex:1; background:transparent; border:none; outline:none;
+  color:var(--bone); padding:14px 22px;
+  font-family:var(--sans); font-size:14px;
+}
+.nl-form input::placeholder{color:rgba(240,233,217,.4)}
+.nl-form button{
+  padding:14px 26px; border-radius:999px; background:var(--bone); color:var(--ink);
+  font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  transition:background .3s, color .3s;
+}
+.nl-form button:hover{background:var(--olive); color:var(--bone)}
+.legal{margin-top:24px; font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.4}
+
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     NAV
+     ========================================================= -->
+<header class="nav" id="nav" data-screen-label="00 Nav">
+  <div class="nav-left">
+    <button class="menu-btn" aria-label="Menu" id="menuBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 8h16M4 16h16"/></svg>
+    </button>
+    <a href="#shop" class="nav-link">Shop</a>
+    <a href="#story" class="nav-link">Maison</a>
+    <a href="#maker" class="nav-link">Founder</a>
+    <a href="#journal" class="nav-link">Journal</a>
+  </div>
+  <a href="index.html" class="brand-mark" aria-label="Victory home">
+    <img class="brand-logo brand-logo--light" src="assets/logo-blanc.svg" alt="Victory."><img class="brand-logo brand-logo--dark" src="assets/logo-vert.svg" alt="Victory.">
+  </a>
+  <div class="nav-right">
+    <a href="#" class="nav-link">EN / FR</a>
+    <a href="#" class="nav-link">Account</a>
+    <button class="nav-cart" id="cartBtn" aria-label="Cart">
+      <span>Cart</span>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- =========================================================
+     HERO
+     ========================================================= -->
+<section class="hero" data-screen-label="01 Hero">
+  <div class="hero-bg"></div>
+  <div class="hero-stripes"></div>
+  <div class="hero-vignette"></div>
+
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow eyebrow">
+        <span class="dot"></span>
+        <span>Maison Victory — St. Tropez · Sancerre</span>
+      </div>
+
+      <h1 class="display hero-title h-xl">
+        <span class="line"><span>Only</span></span>
+        <span class="line"><span><em>winners</em></span></span>
+        <span class="line"><span>drink this.</span></span>
+      </h1>
+
+      <p class="hero-tagline">Rosé, Gin, Rouge, Blanc — four bottles for the days that turn into nights.</p>
+
+      <div class="hero-actions">
+        <a href="#shop" class="cta">
+          <span>Shop the collection</span>
+          <span class="arrow">→</span>
+        </a>
+        <a href="#why" class="cta cta--ghost">
+          <span>Why Victory</span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+
+      <div class="hero-meta">
+        <div><span class="k">Now Pouring</span><span class="v">Rosé St. Tropez</span></div>
+        <div><span class="k">Just Bottled</span><span class="v">Rouge 2024</span></div>
+        <div><span class="k">Distilling</span><span class="v">Gin Batch N°4</span></div>
+      </div>
+    </div>
+
+    <div class="hero-carousel" id="heroCarousel" data-transition="fade" data-show-arrows="true" data-show-dots="true" aria-roledescription="carousel">
+      <div class="hc-slide active" data-theme="rose">
+        <div class="hc-stripes">
+          <div class="hc-inner">
+            <div class="hc-v">V</div>
+            <div class="hc-mid">
+              <div class="word">Victory</div>
+              <div class="kind">Rosé</div>
+              <div class="place">St. Tropez</div>
+            </div>
+            <div class="hc-foot">„THE ROSÉ ONLY<br>WINNERS DRINK"</div>
+          </div>
+        </div>
+      </div>
+      <div class="hc-slide" data-theme="gin">
+        <div class="hc-stripes">
+          <div class="hc-inner">
+            <div class="hc-v">V</div>
+            <div class="hc-mid">
+              <div class="word">Victory</div>
+              <div class="kind" style="font-style:normal; letter-spacing:.16em; text-transform:uppercase; font-size:clamp(22px,2.2vw,28px)">Gin</div>
+              <div class="place">London Dry</div>
+            </div>
+            <div class="hc-foot">„THE GIN ONLY<br>WINNERS DRINK"</div>
+          </div>
+        </div>
+      </div>
+      <div class="hc-slide" data-theme="rouge">
+        <div class="hc-stripes">
+          <div class="hc-inner">
+            <div class="hc-v">V</div>
+            <div class="hc-mid">
+              <div class="word">Victory</div>
+              <div class="kind">Rouge</div>
+              <div class="place">Made in St. Tropez</div>
+            </div>
+            <div class="hc-foot">THE WINE ONLY<br>WINNERS DRINK</div>
+          </div>
+        </div>
+      </div>
+      <div class="hc-slide" data-theme="blanc">
+        <div class="hc-stripes">
+          <div class="hc-inner">
+            <div class="hc-v">V</div>
+            <div class="hc-mid">
+              <div class="word">Victory</div>
+              <div class="kind">Blanc</div>
+              <div class="place">Sancerre · Loire</div>
+            </div>
+            <div class="hc-foot">THE WINE ONLY<br>WINNERS DRINK</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hc-nav">
+        <button class="hc-arrow hc-prev" aria-label="Previous">‹</button>
+        <div class="hc-dots" id="hcDots"></div>
+        <button class="hc-arrow hc-next" aria-label="Next">›</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>
+        The beverage only winners drink <i>✦</i> St. Tropez · Sancerre · London <i>✦</i> Rosé · Gin · Rouge · Blanc <i>✦</i> Hand-bottled <i>✦</i> Made in France <i>✦</i>
+        The beverage only winners drink <i>✦</i> St. Tropez · Sancerre · London <i>✦</i> Rosé · Gin · Rouge · Blanc <i>✦</i> Hand-bottled <i>✦</i> Made in France <i>✦</i>
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     COLLECTION — four bottles
+     ========================================================= -->
+<section class="section collection" id="shop" data-screen-label="02 Shop">
+  <div class="container">
+    <div class="collection-head reveal">
+      <h2 class="h-l lead">The <em>Collection</em>.<br>Four bottles, one philosophy.</h2>
+      <span class="meta">02 — Catalogue</span>
+    </div>
+
+    <div class="products">
+
+      <article class="product product--rose reveal d1"
+               data-product-id="victory-rose"
+               data-product-handle="rose"
+               data-variant-id="40123456789"
+               data-price="3600">
+        <a class="product-media" href="products/rose.html" aria-label="View Victory Rosé">
+          <div class="ph"></div>
+          <img src="assets/rose-1.png" alt="Victory Rosé bottle">
+        </a>
+        <div class="product-body">
+          <a href="products/rose.html">
+            <div class="product-name">Victory <em>Rosé</em></div>
+            <div class="product-sub">St. Tropez · 75cl · 12.5%</div>
+          </a>
+          <div class="product-row">
+            <div class="product-price">€36</div>
+            <button class="add-btn" data-add="victory-rose">
+              <span class="plus">+</span><span>Add</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="product product--gin reveal d2"
+               data-product-id="victory-gin"
+               data-product-handle="gin"
+               data-variant-id="40123456790"
+               data-price="4800">
+        <a class="product-media" href="products/gin.html" aria-label="View Victory Gin">
+          <div class="ph"></div>
+          <img src="assets/gin-1.png" alt="Victory Gin bottle">
+        </a>
+        <div class="product-body">
+          <a href="products/gin.html">
+            <div class="product-name">Victory <em>Gin</em></div>
+            <div class="product-sub">London Dry · 50cl · 44%</div>
+          </a>
+          <div class="product-row">
+            <div class="product-price">€48</div>
+            <button class="add-btn" data-add="victory-gin">
+              <span class="plus">+</span><span>Add</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="product product--rouge reveal d3"
+               data-product-id="victory-rouge"
+               data-product-handle="rouge"
+               data-variant-id="40123456791"
+               data-price="4200">
+        <a class="product-media" href="products/rouge.html" aria-label="View Victory Rouge">
+          <div class="ph"></div>
+          <img src="assets/rouge-1.png" alt="Victory Rouge bottle">
+        </a>
+        <div class="product-body">
+          <a href="products/rouge.html">
+            <div class="product-name">Victory <em>Rouge</em></div>
+            <div class="product-sub">St. Tropez · 75cl · 13.5%</div>
+          </a>
+          <div class="product-row">
+            <div class="product-price">€42</div>
+            <button class="add-btn" data-add="victory-rouge">
+              <span class="plus">+</span><span>Add</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="product product--blanc reveal d4"
+               data-product-id="victory-blanc"
+               data-product-handle="blanc"
+               data-variant-id="40123456792"
+               data-price="4000">
+        <a class="product-media" href="products/blanc.html" aria-label="View Victory Blanc">
+          <div class="ph"></div>
+          <img src="assets/blanc-1.png" alt="Victory Blanc bottle">
+        </a>
+        <div class="product-body">
+          <a href="products/blanc.html">
+            <div class="product-name">Victory <em>Blanc</em></div>
+            <div class="product-sub">Sancerre, Loire · 75cl · 12.5%</div>
+          </a>
+          <div class="product-row">
+            <div class="product-price">€40</div>
+            <button class="add-btn" data-add="victory-blanc">
+              <span class="plus">+</span><span>Add</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     WHY VICTORY — four quote cards
+     ========================================================= -->
+<section class="why" id="why" data-screen-label="03 Why">
+  <div class="container">
+    <div class="why-head reveal">
+      <h2 class="h-l">Why <em>Victory</em>.</h2>
+      <span class="eyebrow" style="opacity:.6">03 — A bottle for every hour</span>
+    </div>
+    <div class="why-grid">
+      <a class="why-card reveal d1" href="products/rose.html">
+        <img class="why-img" src="assets/rose-3.png" alt="">
+        <span class="why-eyebrow">Why Rosé</span>
+        <span class="why-q">"For the days that turn into <em>nights</em>."</span>
+        <span class="why-bottom">
+          <span class="why-name">Victory Rosé · St. Tropez</span>
+          <span class="why-arrow" aria-hidden="true">→</span>
+        </span>
+      </a>
+      <a class="why-card reveal d2" href="products/gin.html">
+        <img class="why-img" src="assets/gin-3.png" alt="">
+        <span class="why-eyebrow">Why Gin</span>
+        <span class="why-q">"The <em>night</em> starts here."</span>
+        <span class="why-bottom">
+          <span class="why-name">Victory Gin · London Dry</span>
+          <span class="why-arrow" aria-hidden="true">→</span>
+        </span>
+      </a>
+      <a class="why-card reveal d3" href="products/rouge.html">
+        <img class="why-img" src="assets/rouge-3.png" alt="">
+        <span class="why-eyebrow">Why Rouge</span>
+        <span class="why-q">"For those who never <em>settle</em>."</span>
+        <span class="why-bottom">
+          <span class="why-name">Victory Rouge · St. Tropez</span>
+          <span class="why-arrow" aria-hidden="true">→</span>
+        </span>
+      </a>
+      <a class="why-card reveal d4" href="products/blanc.html">
+        <img class="why-img" src="assets/blanc-3.png" alt="">
+        <span class="why-eyebrow">Why Blanc</span>
+        <span class="why-q">"Stillness tastes like <em>this</em>."</span>
+        <span class="why-bottom">
+          <span class="why-name">Victory Blanc · Sancerre</span>
+          <span class="why-arrow" aria-hidden="true">→</span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     STORY
+     ========================================================= -->
+<section class="section story" id="story" data-screen-label="04 Story">
+  <div class="container">
+    <div class="row">
+      <div class="story-copy reveal">
+        <div class="eyebrow" style="margin-bottom:32px; opacity:.7">— 04 · La Maison</div>
+        <h2 class="h-l">For those who <em>finish</em><br>what they start.</h2>
+        <p style="margin-top:32px">Victory was founded for the table after the trophy — the long lunch, the late toast, the quiet pour at sunset. Four bottles, sourced from the regions that do them best: Rosé from St. Tropez, Blanc from Sancerre, Rouge from Provence, and a London Dry Gin distilled with Mediterranean botanicals.</p>
+        <p style="margin-top:18px">No second-place. No second-batch. Each release is bottled once, in small numbers, and never reformulated for shelf space. The beverage only winners drink — and only when they've earned it.</p>
+        <div class="signature">
+          Maison Victory.
+          <small>Founded 2022 · St. Tropez, France</small>
+        </div>
+      </div>
+      <div class="story-art reveal d2">
+        <div class="frame">
+          <div class="group-shot">
+            <img src="assets/rouge-1.png" alt="">
+            <img src="assets/rose-1.png" alt="">
+            <img src="assets/blanc-1.png" alt="">
+          </div>
+        </div>
+        <div class="badge">
+          The Maison<span class="y">EST · 2022</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     CREATOR + INSTAGRAM
+     ========================================================= -->
+<section class="section maker" id="maker" data-screen-label="05 Creator">
+  <div class="container">
+    <div class="maker-grid">
+      <div class="maker-portrait reveal">
+        <img class="portrait-img" src="assets/ig-1.jpg" alt="Founder, Maison Victory">
+        <div class="badge-stamp">
+          <span>Hand<br>signed</span>
+        </div>
+      </div>
+      <div class="maker-copy reveal d2">
+        <div class="eyebrow" style="margin-bottom:24px; opacity:.55">— 05 · La Créatrice</div>
+        <h2 class="h-l">A maison, <em>built</em><br>by one woman.</h2>
+        <p class="body-l" style="margin-top:28px; max-width:42ch">
+          Victory began with a single idea: a beverage worth raising for the small victories
+          — the deal closed, the lap won, the dinner that ran long. Sourcing from St. Tropez,
+          Sancerre and a London still, I built the maison one bottle at a time.
+        </p>
+        <p class="body-l" style="margin-top:18px; max-width:42ch">
+          Every label, every batch, every choice — mine. No focus groups, no shelf-space
+          compromises. Just the four bottles I'd want at my own table.
+        </p>
+        <div class="maker-signature">
+          <span class="sig-name">Founder, Maison Victory</span>
+          <span class="sig-name-italic">— Victoria J. Hubert-Rotschild</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- INSTAGRAM STRIP -->
+    <div class="ig-block">
+      <div class="ig-head reveal">
+        <div>
+          <div class="eyebrow" style="opacity:.55; margin-bottom:14px">— 05·b · Instagram</div>
+          <h3 class="h-m">Follow the <em>founder</em>.</h3>
+        </div>
+        <a href="#" class="ig-handle" target="_blank" rel="noopener">
+          <svg class="ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>
+          <span>@VICTORIA J.
+</span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+
+      <div class="ig-grid reveal d1">
+        <a class="ig-tile" href="#" aria-label="Instagram post">
+          <img src="assets/ig-1.jpg" alt="">
+          <span class="ig-overlay">
+            <b><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/></svg> 2.4k</b>
+            <b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 12c0 4.97-4.03 9-9 9-1.4 0-2.7-.32-3.9-.89L3 21l.89-5.1A8.96 8.96 0 0 1 3 12c0-4.97 4.03-9 9-9s9 4.03 9 9z"/></svg> 82</b>
+          </span>
+        </a>
+        <a class="ig-tile" href="#" aria-label="Instagram reel">
+          <video src="assets/ig-4.mp4" autoplay muted loop playsinline></video>
+          <span class="ig-reel-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M5 4l14 8-14 8V4z"/></svg>
+          </span>
+          <span class="ig-overlay">
+            <b><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/></svg> 8.1k</b>
+            <b>REEL</b>
+          </span>
+        </a>
+        <a class="ig-tile" href="#" aria-label="Instagram post">
+          <img src="assets/ig-2.jpg" alt="">
+          <span class="ig-overlay">
+            <b><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/></svg> 4.6k</b>
+            <b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 12c0 4.97-4.03 9-9 9-1.4 0-2.7-.32-3.9-.89L3 21l.89-5.1A8.96 8.96 0 0 1 3 12c0-4.97 4.03-9 9-9s9 4.03 9 9z"/></svg> 218</b>
+          </span>
+        </a>
+        <a class="ig-tile" href="#" aria-label="Instagram post">
+          <img src="assets/ig-3.jpg" alt="">
+          <span class="ig-overlay">
+            <b><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/></svg> 3.7k</b>
+            <b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 12c0 4.97-4.03 9-9 9-1.4 0-2.7-.32-3.9-.89L3 21l.89-5.1A8.96 8.96 0 0 1 3 12c0-4.97 4.03-9 9-9s9 4.03 9 9z"/></svg> 96</b>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     FEATURED — Rosé St. Tropez spotlight
+     ========================================================= -->
+<section class="section feature" data-screen-label="05 Featured">
+  <div class="container">
+    <div class="feature-card reveal">
+      <div class="feature-media">
+        <div class="ring"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+        <img src="assets/rose-1.png" alt="Victory Rosé St. Tropez">
+      </div>
+      <div class="feature-body">
+        <div>
+          <div class="feature-rating">
+            <span class="star">★</span>
+            <span>4.9 of 5</span>
+            <span style="opacity:.5">·</span>
+            <span>312 reviews</span>
+          </div>
+          <h2 class="h-l" style="margin-top:18px">Victory <em>Rosé</em><br>St. Tropez 2024</h2>
+          <p class="body-l" style="margin-top:24px; color:rgba(240,233,217,.85); max-width:42ch">
+            Pale salmon. Wild strawberry, white peach, sea spray. The rosé only winners drink — best served at golden hour, by water, with people who matter.
+          </p>
+        </div>
+
+        <div class="feature-specs">
+          <div class="cell"><span class="k">Volume</span><span class="v">750ml</span></div>
+          <div class="cell"><span class="k">Region</span><span class="v"><em style="font-style:italic">St. Tropez</em></span></div>
+          <div class="cell"><span class="k">ABV</span><span class="v">12.5%</span></div>
+        </div>
+
+        <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap">
+          <a href="products/rose.html" class="cta">
+            <span>Shop Rosé</span>
+            <span class="arrow">→</span>
+          </a>
+          <span style="font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; opacity:.6">€36 · In stock</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     JOURNAL
+     ========================================================= -->
+<section class="section journal" id="journal" data-screen-label="06 Journal">
+  <div class="container">
+    <div class="collection-head reveal">
+      <h2 class="h-l lead">Field <em>notes</em>.</h2>
+      <span class="meta">06 — Journal</span>
+    </div>
+
+    <div class="journal-grid">
+      <a class="entry reveal d1">
+        <div class="entry-thumb"><img src="assets/journal-1.jpg" alt=""><span class="label">St. Tropez · the Côte</span></div>
+        <div class="entry-meta"><span>14 · May</span><span>Vintage</span></div>
+        <h3>A weekend on the Côte.</h3>
+        <p>Where to pour Victory Rosé in St. Tropez — from harbour to hilltop, the spots locals never post.</p>
+      </a>
+      <a class="entry reveal d2">
+        <div class="entry-thumb"><img src="assets/journal-2.jpg" alt=""><span class="label">Mediterranean botanicals</span></div>
+        <div class="entry-meta"><span>02 · April</span><span>Distillation</span></div>
+        <h3>Twelve botanicals, one Gin.</h3>
+        <p>Inside the still — juniper, iris, citrus, and the wild thyme that only grows above the cliffs.</p>
+      </a>
+      <a class="entry reveal d3">
+        <div class="entry-thumb"><img src="assets/journal-3.jpg" alt=""><span class="label">The Maison cellar</span></div>
+        <div class="entry-meta"><span>11 · March</span><span>Pairings</span></div>
+        <h3>Rouge, but at a long lunch.</h3>
+        <p>Three plates that earn a second pour. From the kitchen of our St. Tropez cellar.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     NEWSLETTER
+     ========================================================= -->
+<section class="section newsletter" data-screen-label="07 Newsletter">
+  <div class="container reveal">
+    <div class="eyebrow" style="opacity:.6; margin-bottom:24px">— 07 · Subscribe</div>
+    <h2 class="h-l">Letters from the <em>cellar</em>.</h2>
+    <p>New batches, small drops, and the occasional pairing. Four times a year, no more.</p>
+    <form class="nl-form" onsubmit="event.preventDefault(); this.querySelector('input').value=''; toast('Merci — you are on the list')">
+      <input type="email" placeholder="your@email.com" required>
+      <button type="submit">Subscribe</button>
+    </form>
+    <div class="legal">Drink responsibly · 18+ · Read our privacy policy</div>
+  </div>
+</section>
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+<footer data-screen-label="08 Footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="foot-brand">
+        <span class="brand-mark"><img class="brand-logo" src="assets/logo-blanc.svg" alt="Victory."></span>
+        <p>The beverage only winners drink. Rosé, Gin, Rouge, and Blanc — bottled by hand in St. Tropez since 2022.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="products/rose.html">Victory Rosé</a></li>
+          <li><a href="products/gin.html">Victory Gin</a></li>
+          <li><a href="products/rouge.html">Victory Rouge</a></li>
+          <li><a href="products/blanc.html">Victory Blanc</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Maison</h4>
+        <ul>
+          <li><a href="#story">Our story</a></li>
+          <li><a href="#why">Why Victory</a></li>
+          <li><a href="#">Visit us</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Service</h4>
+        <ul>
+          <li><a href="#">Shipping</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Trade</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-mark">Victory.</div>
+    <div class="foot-bottom">
+      <span>© 2026 Maison Victory · St. Tropez, FR</span>
+      <span>Instagram · Are.na · Substack</span>
+    </div>
+  </div>
+</footer>
+
+<!-- =========================================================
+     CART DRAWER + MOBILE MENU + TOAST
+     ========================================================= -->
+<div class="scrim" id="scrim"></div>
+
+<aside class="drawer" id="drawer" aria-label="Cart">
+  <div class="drawer-head">
+    <h3>Your cart</h3>
+    <button class="drawer-close" id="drawerClose" aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot" id="drawerFoot" style="display:none">
+    <div class="totals">
+      <span>Subtotal</span>
+      <span class="v" id="cartTotal">€0</span>
+    </div>
+    <button type="button" class="checkout-btn" id="checkoutBtn">Checkout</button>
+    <div style="font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.45; margin-top:14px; text-align:center">Shipping &amp; taxes calculated at checkout</div>
+  </div>
+</aside>
+
+<div class="menu-overlay" id="menuOverlay">
+  <div class="menu-overlay-top">
+    <span class="brand-mark"><img class="brand-logo" src="assets/logo-blanc.svg" alt="Victory."></span>
+    <button class="drawer-close" id="menuClose" style="background:rgba(240,233,217,.1); color:var(--bone); width:42px; height:42px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+  </div>
+  <nav>
+    <a href="#shop"><em>Shop</em> →</a>
+    <a href="#story"><em>Maison</em> →</a>
+    <a href="#why"><em>Why Victory</em> →</a>
+    <a href="#journal"><em>Journal</em> →</a>
+    <a href="#"><em>Account</em> →</a>
+  </nav>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/shopify-storefront.js"></script>
+<script src="assets/site.js"></script>
+<script>
+// Nav solid-on-scroll
+const nav  = document.getElementById('nav');
+const hero = document.querySelector('.hero');
+const setNavSolid = () => {
+  const past = window.scrollY > hero.offsetHeight - 80;
+  nav.classList.toggle('solid', past);
+};
+window.addEventListener('scroll', setNavSolid, {passive:true});
+setNavSolid();
+
+// ----- Tweak defaults (persisted block) ----------------------
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "autoplay": true,
+  "interval": 2,
+  "transition": "fade",
+  "showArrows": false,
+  "showDots": true,
+  "pauseOnHover": false
+}/*EDITMODE-END*/;
+
+// ----- Hero carousel logic ----------------------------------
+const carousel = document.getElementById('heroCarousel');
+const slides = [...carousel.querySelectorAll('.hc-slide')];
+const dotsWrap = document.getElementById('hcDots');
+let activeIdx = 0;
+let autoplayTimer = null;
+let tweaks = { ...TWEAK_DEFAULTS };
+
+function renderDots(){
+  dotsWrap.innerHTML = slides.map((_,i) =>
+    `<button data-idx="${i}" class="${i===activeIdx?'active':''}" aria-label="Slide ${i+1}"></button>`
+  ).join('');
+  dotsWrap.querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', () => goTo(parseInt(b.dataset.idx,10)));
+  });
+}
+
+function goTo(i){
+  activeIdx = (i + slides.length) % slides.length;
+  slides.forEach((s, idx) => s.classList.toggle('active', idx === activeIdx));
+  dotsWrap.querySelectorAll('button').forEach((b, idx) => b.classList.toggle('active', idx === activeIdx));
+  resetAutoplay();
+}
+const next = () => goTo(activeIdx + 1);
+const prev = () => goTo(activeIdx - 1);
+
+carousel.querySelector('.hc-next').addEventListener('click', next);
+carousel.querySelector('.hc-prev').addEventListener('click', prev);
+
+function resetAutoplay(){
+  clearInterval(autoplayTimer);
+  if(tweaks.autoplay){
+    autoplayTimer = setInterval(next, tweaks.interval * 1000);
+  }
+}
+
+carousel.addEventListener('mouseenter', () => {
+  if(tweaks.pauseOnHover && tweaks.autoplay) clearInterval(autoplayTimer);
+});
+carousel.addEventListener('mouseleave', () => {
+  if(tweaks.pauseOnHover && tweaks.autoplay) resetAutoplay();
+});
+
+// keyboard nav
+document.addEventListener('keydown', (e) => {
+  if(document.activeElement && document.activeElement.tagName === 'INPUT') return;
+  if(e.key === 'ArrowRight' && window.scrollY < 200) next();
+  if(e.key === 'ArrowLeft'  && window.scrollY < 200) prev();
+});
+
+function applyTweaks(t){
+  tweaks = { ...tweaks, ...t };
+  carousel.dataset.transition = tweaks.transition;
+  carousel.dataset.showArrows = String(tweaks.showArrows);
+  carousel.dataset.showDots   = String(tweaks.showDots);
+  resetAutoplay();
+}
+
+renderDots();
+applyTweaks(TWEAK_DEFAULTS);
+
+// Expose for Tweaks panel
+window.__heroCarousel = { applyTweaks, defaults: TWEAK_DEFAULTS };
+</script>
+
+<!-- Tweaks panel (React) -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="assets/tweaks-panel.jsx"></script>
+<div id="tweaks-root"></div>
+<script type="text/babel">
+const { useEffect } = React;
+
+function HeroTweaks(){
+  const [t, setTweak] = useTweaks(window.__heroCarousel.defaults);
+
+  useEffect(() => {
+    window.__heroCarousel.applyTweaks(t);
+  }, [t]);
+
+  return (
+    <TweaksPanel title="Tweaks">
+      <TweakSection label="Hero carousel">
+        <TweakToggle label="Autoplay" value={t.autoplay} onChange={v => setTweak('autoplay', v)} />
+        <TweakSlider label="Interval (sec)" value={t.interval} onChange={v => setTweak('interval', v)} min={2} max={12} step={1} />
+        <TweakRadio label="Transition" value={t.transition} onChange={v => setTweak('transition', v)} options={[
+          { value: 'fade',  label: 'Fade'  },
+          { value: 'slide', label: 'Slide' },
+          { value: 'scale', label: 'Scale' },
+        ]} />
+      </TweakSection>
+
+      <TweakSection label="Controls">
+        <TweakToggle label="Show arrows"  value={t.showArrows}  onChange={v => setTweak('showArrows', v)} />
+        <TweakToggle label="Show dots"    value={t.showDots}    onChange={v => setTweak('showDots', v)} />
+        <TweakToggle label="Pause on hover" value={t.pauseOnHover} onChange={v => setTweak('pauseOnHover', v)} />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<HeroTweaks />);
+</script>
+
+</body>
+</html>

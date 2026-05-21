@@ -1,0 +1,71 @@
+<footer class="site-footer" role="contentinfo" data-screen-label="08 Footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="foot-brand">
+        <span class="brand">{{ section.settings.brand | default: shop.name }}</span>
+        <p>{{ section.settings.tagline }}</p>
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'column' -%}
+          <div class="foot-col" {{ block.shopify_attributes }}>
+            <h4>{{ block.settings.heading }}</h4>
+            <ul>
+              {%- assign menu = linklists[block.settings.menu] -%}
+              {%- if menu.links.size > 0 -%}
+                {%- for link in menu.links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              {%- else -%}
+                {%- assign items = block.settings.fallback_links | newline_to_br | split: '<br />' -%}
+                {%- for item in items -%}
+                  {%- assign parts = item | split: '|' -%}
+                  <li><a href="{{ parts[1] | default: '#' | strip }}">{{ parts[0] | strip }}</a></li>
+                {%- endfor -%}
+              {%- endif -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="foot-mark">{{ section.settings.brand | default: shop.name }}</div>
+
+    <div class="foot-bottom">
+      <span>© {{ 'now' | date: '%Y' }} {{ shop.name }} · {{ section.settings.location }}</span>
+      <span>{{ section.settings.social }}</span>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "text", "id": "brand", "label": "Brand wordmark", "default": "Aurore" },
+    { "type": "text", "id": "tagline", "label": "Tagline", "default": "Small-batch rosé and botanical gin, made by hand in Provence since 2019." },
+    { "type": "text", "id": "location", "label": "Location line", "default": "Provence, FR" },
+    { "type": "text", "id": "social", "label": "Social line", "default": "Instagram · Are.na · Substack" }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Menu column",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Shop" },
+        { "type": "link_list", "id": "menu", "label": "Menu" },
+        { "type": "textarea", "id": "fallback_links", "label": "Fallback links (one per line: Label | /url)", "default": "Rosé N°7 | /products/rose-n7\nForêt Gin | /products/gin-foret\nGift box | /products/gift\nReserve | /collections/reserve" }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [{
+    "name": "Footer",
+    "blocks": [
+      { "type": "column", "settings": { "heading": "Shop" } },
+      { "type": "column", "settings": { "heading": "Maison", "fallback_links": "Our story | /pages/story\nVineyard | /pages/vineyard\nVisit us | /pages/visit\nPress | /pages/press" } },
+      { "type": "column", "settings": { "heading": "Service", "fallback_links": "Shipping | /pages/shipping\nReturns | /pages/returns\nTrade | /pages/trade\nContact | /pages/contact" } }
+    ]
+  }]
+}
+{% endschema %}

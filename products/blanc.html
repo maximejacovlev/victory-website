@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Victory Blanc — Victory.</title>
+<meta name="description" content="Victory Blanc — The wine only winners drink — stillness, tasted." />
+<link rel="icon" href="../assets/favicon.png" type="image/png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/pdp.css">
+
+<style>
+/* Mini collection grid (related) reuses .product card from home.
+   Provide local copies of the styles since pdp.css does not include them. */
+.products{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
+@media (max-width:860px){.products{grid-template-columns:1fr}}
+.product{position:relative; background:var(--cream); border:1px solid var(--rule); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; transition: transform .5s cubic-bezier(.2,.7,.1,1), box-shadow .5s, border-color .5s}
+.product:hover{transform:translateY(-6px); box-shadow:0 30px 60px -30px rgba(45,48,24,.35); border-color:var(--olive)}
+.product-media{position:relative; aspect-ratio:1/1.05; display:flex; align-items:center; justify-content:center; overflow:hidden; background:var(--cream)}
+.product-media .ph{position:absolute; inset:0; background:radial-gradient(60% 50% at 50% 35%, rgba(255,255,255,.6), transparent 70%)}
+.product-media img{position:relative; z-index:1; width:100%; height:100%; object-fit:contain; transition:transform .8s cubic-bezier(.2,.7,.1,1)}
+.product:hover .product-media img{transform:translateY(-6px) scale(1.03)}
+.product--rose  .product-media{background:linear-gradient(170deg,#f5e2d8,#e8c1ad)}
+.product--gin   .product-media{background:linear-gradient(170deg,#dde1d3,#b4bca0)}
+.product--rouge .product-media{background:linear-gradient(170deg,#2a1818,#0c0606)}
+.product--blanc .product-media{background:linear-gradient(170deg,#f1ecdf,#d8cea8)}
+.product-body{padding:24px; display:flex; flex-direction:column; gap:6px; background:var(--cream); border-top:1px solid var(--rule)}
+.product-name{font-family:var(--serif); font-size:30px; line-height:1.0; letter-spacing:-.01em}
+.product-name em{font-style:italic; font-weight:300}
+.product-sub{font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.55; margin-top:4px}
+.product-row{display:flex; justify-content:space-between; align-items:center; margin-top:18px; padding-top:16px; border-top:1px solid var(--rule)}
+.product-price{font-family:var(--serif); font-size:22px}
+.add-btn{display:inline-flex; align-items:center; gap:10px; padding:11px 16px; border-radius:999px; background:var(--ink); color:var(--bone); font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; transition:background .3s, transform .3s}
+.add-btn:hover{background:var(--olive); transform:scale(1.03)}
+.add-btn .plus{transition:transform .3s; display:inline-block}
+.add-btn:hover .plus{transform:rotate(90deg)}
+</style>
+</head>
+<body>
+
+<header class="nav solid" id="nav" data-screen-label="00 Nav">
+  <div class="nav-left">
+    <button class="menu-btn" aria-label="Menu" id="menuBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 8h16M4 16h16"/></svg>
+    </button>
+    <a href="../index.html#shop" class="nav-link">Shop</a>
+    <a href="../index.html#story" class="nav-link">Maison</a>
+    <a href="../index.html#why" class="nav-link">Why Victory</a>
+    <a href="../index.html#journal" class="nav-link">Journal</a>
+  </div>
+  <a href="../index.html" class="brand-mark" aria-label="Victory home">
+    <img class="brand-logo brand-logo--light" src="../assets/logo-blanc.svg" alt="Victory."><img class="brand-logo brand-logo--dark" src="../assets/logo-vert.svg" alt="Victory.">
+  </a>
+  <div class="nav-right">
+    <a href="#" class="nav-link">EN / FR</a>
+    <a href="#" class="nav-link">Account</a>
+    <button class="nav-cart" id="cartBtn" aria-label="Cart">
+      <span>Cart</span>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="pdp-hero" data-screen-label="01 Product">
+  <div class="container">
+    <div class="reveal">
+      <div class="pdp-media blanc">
+        <span class="stripe-deco"></span>
+        <span class="stripe-deco r"></span>
+        <img id="pdpHero" src="../assets/blanc-1.png" alt="Victory Blanc">
+      </div>
+      <div class="pdp-thumbs">
+        <button class="pdp-thumb active" data-src="../assets/blanc-1.png"><img src="../assets/blanc-1.png" alt=""></button>
+        <button class="pdp-thumb" data-src="../assets/blanc-2.png"><img src="../assets/blanc-2.png" alt=""></button>
+      </div>
+    </div>
+
+    <div class="pdp-info reveal d2">
+      <div class="pdp-crumb">
+        <a href="../index.html">Maison</a><span>·</span>
+        <a href="../index.html#shop">Shop</a><span>·</span>
+        <span>Victory Blanc</span>
+      </div>
+      <h1>Victory <em>Blanc</em></h1>
+      <p class="pdp-tag">The wine only winners drink — stillness, tasted.</p>
+
+      <div class="pdp-meta-row">
+        <span><b>750ml</b></span>
+        <span><b>12.5%</b> abv</span>
+        <span>Sancerre, Loire</span>
+        <span>Sauvignon Blanc</span>
+      </div>
+
+      <div class="pdp-price">
+        €40
+        <span class="unit">incl. tax</span>
+      </div>
+
+      
+      <div class="pdp-subscribe" id="pdpSub">
+        <label class="pdp-sub-opt active" data-sub="false">
+          <input type="radio" name="purchase" value="onetime" checked>
+          <span class="pdp-sub-radio"></span>
+          <span class="pdp-sub-label">
+            <span class="pdp-sub-title">One-time <em>purchase</em></span>
+            <span class="pdp-sub-meta">Ships once · No commitment</span>
+          </span>
+          <span class="pdp-sub-price">€40</span>
+        </label>
+
+        <label class="pdp-sub-opt" data-sub="true">
+          <input type="radio" name="purchase" value="subscribe">
+          <span class="pdp-sub-radio"></span>
+          <span class="pdp-sub-label">
+            <span class="pdp-sub-title">Subscribe &amp; <em>save</em><span class="pdp-sub-save">−10%</span></span>
+            <span class="pdp-sub-meta">Auto-renews · Skip or cancel anytime</span>
+          </span>
+          <span class="pdp-sub-price"><span class="strike">€40</span>€36</span>
+        </label>
+        <div class="pdp-sub-expand">
+          <div class="pdp-sub-meta" style="opacity:.85">Delivery frequency</div>
+          <div class="pdp-freq" id="pdpFreq">
+            <button data-freq="1" class="">Every month</button>
+            <button data-freq="2" class="active">Every 2 months</button>
+            <button data-freq="3" class="">Every 3 months</button>
+            <button data-freq="6" class="">Every 6 months</button>
+          </div>
+          <div class="pdp-sub-note">First shipment dispatched within 3–5 days. Manage your subscription from your account at any time.</div>
+        </div>
+      </div>
+
+      <div class="pdp-actions">
+        <div class="pdp-qty">
+          <button id="qtyDown" aria-label="Decrease">−</button>
+          <span id="qty">1</span>
+          <button id="qtyUp" aria-label="Increase">+</button>
+        </div>
+        <button class="pdp-add" id="pdpAdd" data-add="victory-blanc">
+          <span>Add to cart — €40</span>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+      <div class="pdp-promise">Ships in 3–5 days · Free over €120 · Returns within 14 days</div>
+    </div>
+  </div>
+</section>
+
+<!-- DETAILS -->
+<section class="pdp-details" data-screen-label="02 Tasting">
+  <div class="container">
+    <div class="reveal">
+      <h3>Tasting <em>notes</em>.</h3>
+      <p>Pale gold with green reflections. Cut grass, white flowers, ripe fig, flint. Mineral, taut, lemon zest and chalk. Razor-sharp finish.</p>
+      <div class="pdp-notes">
+        <div class="pdp-note"><span class="k">Appearance</span><span class="v">Pale gold with green reflections</span></div>
+        <div class="pdp-note"><span class="k">Nose</span><span class="v">Cut grass, white flowers, ripe fig, flint</span></div>
+        <div class="pdp-note"><span class="k">Palate</span><span class="v">Mineral, taut, lemon zest and chalk. Razor-sharp finish</span></div>
+        <div class="pdp-note"><span class="k">Finish</span><span class="v">Long, considered</span></div>
+      </div>
+    </div>
+    <div class="reveal d2">
+      <h3>Pairings &amp; <em>serving</em>.</h3>
+      <p>Goat cheese, raw scallops, a quiet afternoon.</p>
+      <p style="margin-top:14px"><strong>Serve at</strong> — 8–10°C, slim white wine glass.</p>
+      <div class="pdp-notes">
+        <div class="pdp-note"><span class="k">Region</span><span class="v">Sancerre, Loire</span></div>
+        <div class="pdp-note"><span class="k">Volume</span><span class="v">750ml</span></div>
+        <div class="pdp-note"><span class="k">ABV</span><span class="v">12.5%</span></div>
+        <div class="pdp-note"><span class="k">Grape / Botanicals</span><span class="v">Sauvignon Blanc</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="pdp-why pdp-why--blanc" data-screen-label="03 Why">
+  <div class="container reveal">
+    <div class="eyebrow">Why Blanc</div>
+    <div class="q">"Stillness tastes like <em>this.</em>"</div>
+    <div class="author">— Maison Victory · Sancerre</div>
+  </div>
+</section>
+
+<!-- RELATED -->
+<section class="pdp-related" data-screen-label="04 Related">
+  <div class="container">
+    <div class="pdp-related-head reveal">
+      <h2 class="h-l">More from <em>Victory</em>.</h2>
+      <a href="../index.html#shop" class="eyebrow" style="opacity:.6">View all →</a>
+    </div>
+    <div class="products reveal d1">
+      
+        <article class="product product--rose" data-product-id="victory-rose">
+          <a class="product-media" href="rose.html" aria-label="View Victory Rosé">
+            <div class="ph"></div>
+            <img src="../assets/rose-1.png" alt="Victory Rosé bottle">
+          </a>
+          <div class="product-body">
+            <a href="rose.html">
+              <div class="product-name">Victory <em>Rosé</em></div>
+              <div class="product-sub">St. Tropez · 75cl</div>
+            </a>
+            <div class="product-row">
+              <div class="product-price">€36</div>
+              <button class="add-btn" data-add="victory-rose">
+                <span class="plus">+</span><span>Add</span>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="product product--gin" data-product-id="victory-gin">
+          <a class="product-media" href="gin.html" aria-label="View Victory Gin">
+            <div class="ph"></div>
+            <img src="../assets/gin-1.png" alt="Victory Gin bottle">
+          </a>
+          <div class="product-body">
+            <a href="gin.html">
+              <div class="product-name">Victory <em>Gin</em></div>
+              <div class="product-sub">London Dry · 50cl</div>
+            </a>
+            <div class="product-row">
+              <div class="product-price">€48</div>
+              <button class="add-btn" data-add="victory-gin">
+                <span class="plus">+</span><span>Add</span>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="product product--rouge" data-product-id="victory-rouge">
+          <a class="product-media" href="rouge.html" aria-label="View Victory Rouge">
+            <div class="ph"></div>
+            <img src="../assets/rouge-1.png" alt="Victory Rouge bottle">
+          </a>
+          <div class="product-body">
+            <a href="rouge.html">
+              <div class="product-name">Victory <em>Rouge</em></div>
+              <div class="product-sub">St. Tropez · 75cl</div>
+            </a>
+            <div class="product-row">
+              <div class="product-price">€42</div>
+              <button class="add-btn" data-add="victory-rouge">
+                <span class="plus">+</span><span>Add</span>
+              </button>
+            </div>
+          </div>
+        </article>
+    </div>
+  </div>
+</section>
+
+<footer data-screen-label="05 Footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="foot-brand">
+        <span class="brand-mark"><img class="brand-logo" src="../assets/logo-blanc.svg" alt="Victory."></span>
+        <p>The beverage only winners drink. Rosé, Gin, Rouge, and Blanc — bottled by hand in St. Tropez since 2022.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="rose.html">Victory Rosé</a></li>
+          <li><a href="gin.html">Victory Gin</a></li>
+          <li><a href="rouge.html">Victory Rouge</a></li>
+          <li><a href="blanc.html">Victory Blanc</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Maison</h4>
+        <ul>
+          <li><a href="../index.html#story">Our story</a></li>
+          <li><a href="../index.html#why">Why Victory</a></li>
+          <li><a href="#">Visit us</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Service</h4>
+        <ul>
+          <li><a href="#">Shipping</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Trade</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-mark">Victory.</div>
+    <div class="foot-bottom">
+      <span>© 2026 Maison Victory · St. Tropez, FR</span>
+      <span>Instagram · Are.na · Substack</span>
+    </div>
+  </div>
+</footer>
+
+<!-- CART DRAWER + MENU + TOAST -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Cart">
+  <div class="drawer-head">
+    <h3>Your cart</h3>
+    <button class="drawer-close" id="drawerClose" aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot" id="drawerFoot" style="display:none">
+    <div class="totals">
+      <span>Subtotal</span>
+      <span class="v" id="cartTotal">€0</span>
+    </div>
+    <button type="button" class="checkout-btn" id="checkoutBtn">Checkout</button>
+    <div style="font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.45; margin-top:14px; text-align:center">Shipping &amp; taxes calculated at checkout</div>
+  </div>
+</aside>
+
+<div class="menu-overlay" id="menuOverlay">
+  <div class="menu-overlay-top">
+    <span class="brand-mark"><img class="brand-logo" src="../assets/logo-blanc.svg" alt="Victory."></span>
+    <button class="drawer-close" id="menuClose" style="background:rgba(240,233,217,.1); color:var(--bone); width:42px; height:42px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+  </div>
+  <nav>
+    <a href="../index.html#shop"><em>Shop</em> →</a>
+    <a href="../index.html#story"><em>Maison</em> →</a>
+    <a href="../index.html#why"><em>Why Victory</em> →</a>
+    <a href="../index.html#journal"><em>Journal</em> →</a>
+    <a href="#"><em>Account</em> →</a>
+  </nav>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="../assets/shopify-storefront.js"></script>
+<script src="../assets/site.js"></script>
+<script>
+// asset paths in PRODUCTS need parent prefix for product pages
+rebasePaths('../');
+
+// thumb gallery
+const heroImg = document.getElementById('pdpHero');
+document.querySelectorAll('.pdp-thumb').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.pdp-thumb').forEach(o=>o.classList.remove('active'));
+    t.classList.add('active');
+    heroImg.src = t.dataset.src;
+  });
+});
+
+// Subscription toggle
+const subOpts = document.querySelectorAll('.pdp-sub-opt');
+let isSubscription = false;
+let freqMonths = 2;
+const PRICE_FULL = 40;
+const PRICE_SUB  = 36;
+
+function updateAddLabel(){
+  const total = (isSubscription ? PRICE_SUB : PRICE_FULL) * qty;
+  const lbl = isSubscription
+    ? `Subscribe — €${total} every ${freqMonths} month${freqMonths>1?'s':''}`
+    : `Add to cart — €${total}`;
+  document.querySelector('#pdpAdd span').textContent = lbl;
+}
+
+subOpts.forEach(opt => {
+  opt.addEventListener('click', (e) => {
+    e.preventDefault();
+    subOpts.forEach(o => o.classList.remove('active'));
+    opt.classList.add('active');
+    isSubscription = opt.dataset.sub === 'true';
+    opt.querySelector('input').checked = true;
+    updateAddLabel();
+  });
+});
+document.querySelectorAll('#pdpFreq button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#pdpFreq button').forEach(o=>o.classList.remove('active'));
+    b.classList.add('active');
+    freqMonths = parseInt(b.dataset.freq, 10);
+    updateAddLabel();
+  });
+});
+
+// qty — site.js reads data-qty on [data-add]
+let qty = 1;
+const pdpAdd = document.getElementById('pdpAdd');
+const qtyEl = document.getElementById('qty');
+function syncQty(){
+  pdpAdd.dataset.qty = String(qty);
+  updateAddLabel();
+}
+document.getElementById('qtyUp').addEventListener('click', () => { qty++; qtyEl.textContent = qty; syncQty(); });
+document.getElementById('qtyDown').addEventListener('click', () => { if(qty>1){ qty--; qtyEl.textContent = qty; syncQty(); } });
+pdpAdd.addEventListener('click', (e) => {
+  if(!isSubscription) return;
+  e.stopImmediatePropagation();
+  toast('Subscription started — every ' + freqMonths + ' month' + (freqMonths>1?'s':''));
+  addToCart('victory-blanc', qty);
+});
+syncQty();
+</script>
+
+</body>
+</html>

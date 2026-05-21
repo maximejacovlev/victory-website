@@ -1,0 +1,63 @@
+<section class="pdp" data-screen-label="Product">
+  <div class="pdp-grid">
+    <div class="pdp-media">
+      {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 1600 }}"
+             alt="{{ product.featured_image.alt | default: product.title | escape }}">
+      {%- else -%}
+        <div style="aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;width:100%">
+          {%- if product.tags contains 'gin' -%}
+            {%- render 'bottle-svg', kind: 'gin', name: shop.name -%}
+          {%- else -%}
+            {%- render 'bottle-svg', kind: 'rose', name: shop.name -%}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="pdp-body">
+      <div class="pdp-vendor">{{ product.vendor }}{% if product.type != blank %} · {{ product.type }}{% endif %}</div>
+      <h1>{{ product.title }}</h1>
+      <div class="pdp-price" data-variant-price>
+        {%- if product.compare_at_price > product.price -%}
+          <s style="opacity:.4;font-size:.7em;margin-right:8px">{{ product.compare_at_price | money }}</s>
+        {%- endif -%}
+        {{ product.price | money }}
+      </div>
+
+      <div class="pdp-desc">{{ product.description }}</div>
+
+      <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data">
+        {%- if product.variants.size > 1 -%}
+          <div class="pdp-variants" data-variant-picker>
+            {%- for variant in product.variants -%}
+              <button type="button"
+                      class="pdp-variant {% if variant == product.selected_or_first_available_variant %}active{% endif %}"
+                      data-variant-id="{{ variant.id }}"
+                      data-price="{{ variant.price }}"
+                      {% unless variant.available %}disabled style="opacity:.4"{% endunless %}>
+                {{ variant.title }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <button type="submit" class="pdp-add" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+          {% if product.selected_or_first_available_variant.available %}Add to cart — {{ product.price | money }}{% else %}Sold out{% endif %}
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% section 'process' %}
+{% section 'journal' %}
+
+{% schema %}
+{
+  "name": "Product page",
+  "settings": []
+}
+{% endschema %}

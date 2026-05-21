@@ -1,0 +1,47 @@
+<header class="nav" id="siteNav" role="banner">
+  <div class="nav-left">
+    <button class="menu-btn" data-open-menu aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 8h16M4 16h16"/></svg>
+    </button>
+    {%- for link in section.settings.menu_left.links -%}
+      <a href="{{ link.url }}" class="nav-link">{{ link.title }}</a>
+    {%- else -%}
+      <a href="/collections/all" class="nav-link">Shop</a>
+      <a href="/pages/story" class="nav-link">Maison</a>
+      <a href="/pages/process" class="nav-link">Process</a>
+      <a href="/blogs/{{ section.settings.blog_handle | default: 'news' }}" class="nav-link">Journal</a>
+    {%- endfor -%}
+  </div>
+
+  <a href="{{ routes.root_url }}" class="brand-mark" aria-label="{{ shop.name }} — Home">
+    {%- if section.settings.logo != blank -%}
+      <img src="{{ section.settings.logo | image_url: width: 240 }}" alt="{{ shop.name }}" style="height:32px;width:auto">
+    {%- else -%}
+      <span class="brand">{{ section.settings.brand_text | default: shop.name }}</span>
+    {%- endif -%}
+  </a>
+
+  <div class="nav-right">
+    {%- if section.settings.show_locale -%}
+      <a href="#" class="nav-link">{{ request.locale.iso_code | upcase }}</a>
+    {%- endif -%}
+    <a href="{{ routes.account_url }}" class="nav-link">{% if customer %}Account{% else %}Sign in{% endif %}</a>
+    <button class="nav-cart" data-open-cart aria-label="Open cart">
+      <span>Cart</span>
+      <span class="cart-count" data-cart-count>{{ cart.item_count }}</span>
+    </button>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo (optional)" },
+    { "type": "text", "id": "brand_text", "label": "Brand wordmark (used if no logo)", "default": "Aurore" },
+    { "type": "link_list", "id": "menu_left", "label": "Left menu" },
+    { "type": "text", "id": "blog_handle", "label": "Journal blog handle", "default": "news" },
+    { "type": "checkbox", "id": "show_locale", "label": "Show locale switcher", "default": true }
+  ]
+}
+{% endschema %}

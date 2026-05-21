@@ -1,0 +1,51 @@
+<div class="scrim" id="scrim" data-close-cart></div>
+
+<aside class="drawer" id="cartDrawer" aria-label="Cart">
+  <div class="drawer-head">
+    <h3>Your cart</h3>
+    <button class="drawer-close" data-close-cart aria-label="Close cart">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+  </div>
+
+  <div class="drawer-body" id="cartDrawerBody">
+    {%- if cart.item_count == 0 -%}
+      <div class="cart-empty">
+        <p>Empty for now.</p>
+        <small>Add a bottle and it will rest here.</small>
+      </div>
+    {%- else -%}
+      {%- for line in cart.items -%}
+        <div class="cart-item" data-key="{{ line.key }}">
+          <div class="thumb">
+            {%- if line.image -%}
+              <img src="{{ line.image | image_url: width: 200 }}" alt="">
+            {%- endif -%}
+          </div>
+          <div>
+            <div class="name">{{ line.product.title }}</div>
+            <div class="meta">{% unless line.variant.title contains 'Default' %}{{ line.variant.title }}{% endunless %}</div>
+            <div class="qty">
+              <button type="button" data-qty="-1" data-key="{{ line.key }}">−</button>
+              <span>{{ line.quantity }}</span>
+              <button type="button" data-qty="1" data-key="{{ line.key }}">+</button>
+            </div>
+            <a class="cart-item-remove" data-key="{{ line.key }}" data-remove>Remove</a>
+          </div>
+          <div class="price">{{ line.final_line_price | money }}</div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+
+  <div class="drawer-foot" id="cartDrawerFoot" {% if cart.item_count == 0 %}style="display:none"{% endif %}>
+    <div class="totals">
+      <span>Subtotal</span>
+      <span class="v" id="cartTotal">{{ cart.total_price | money }}</span>
+    </div>
+    <a href="{{ routes.cart_url }}/checkout" class="checkout-btn">Checkout</a>
+    <div style="font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.45; margin-top:14px; text-align:center">
+      Shipping &amp; taxes calculated at checkout
+    </div>
+  </div>
+</aside>

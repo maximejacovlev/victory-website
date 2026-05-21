@@ -1,0 +1,92 @@
+{%- assign product = all_products[section.settings.product] -%}
+
+<section class="section feature" data-screen-label="05 Featured">
+  <div class="container">
+    <div class="feature-card reveal">
+      <div class="feature-media">
+        <div class="ring"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+        {%- if product and product.featured_image -%}
+          <img src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.title }}">
+        {%- else -%}
+          {%- render 'bottle-svg', kind: 'rose' -%}
+        {%- endif -%}
+      </div>
+      <div class="feature-body">
+        <div>
+          {%- if section.settings.rating != blank -%}
+            <div class="feature-rating">
+              <span class="star">★</span>
+              <span>{{ section.settings.rating }}</span>
+              {%- if section.settings.review_count != blank -%}
+                <span style="opacity:.5">·</span>
+                <span>{{ section.settings.review_count }}</span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+          <h2 class="h-l" style="margin-top:18px">
+            {%- if section.settings.heading != blank -%}
+              {{ section.settings.heading }}
+            {%- elsif product -%}
+              {{ product.title }}
+            {%- endif -%}
+          </h2>
+          <p class="body-l" style="margin-top:24px; color:rgba(245,239,230,.78); max-width:42ch">
+            {%- if section.settings.body != blank -%}
+              {{ section.settings.body }}
+            {%- elsif product -%}
+              {{ product.description | strip_html | truncatewords: 30 }}
+            {%- endif -%}
+          </p>
+        </div>
+
+        <div class="feature-specs">
+          <div class="cell"><span class="k">{{ section.settings.spec_1_label }}</span><span class="v">{{ section.settings.spec_1_value }}</span></div>
+          <div class="cell"><span class="k">{{ section.settings.spec_2_label }}</span><span class="v"><em>{{ section.settings.spec_2_value }}</em></span></div>
+          <div class="cell"><span class="k">{{ section.settings.spec_3_label }}</span><span class="v">{{ section.settings.spec_3_value }}</span></div>
+        </div>
+
+        <div class="feature-cta-row">
+          {%- if product -%}
+            <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data">
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              <input type="hidden" name="quantity" value="1">
+              <button type="submit" class="cta">
+                <span>Shop {{ product.title }}</span>
+                <span class="arrow">→</span>
+              </button>
+            </form>
+            <span class="meta">{{ product.price | money }} · {% if product.available %}In stock{% else %}Sold out{% endif %}</span>
+          {%- else -%}
+            <a href="/collections/all" class="cta">
+              <span>Shop the collection</span>
+              <span class="arrow">→</span>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured product",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product to feature" },
+    { "type": "html", "id": "heading", "label": "Heading (overrides product title)", "default": "Cuvée <em>N°7</em><br>Provence Rosé 2024" },
+    { "type": "textarea", "id": "body", "label": "Body (overrides product description)" },
+    { "type": "text", "id": "rating", "label": "Rating", "default": "4.9 of 5" },
+    { "type": "text", "id": "review_count", "label": "Review count", "default": "248 reviews" },
+    { "type": "header", "content": "Specs" },
+    { "type": "text", "id": "spec_1_label", "label": "Spec 1 label", "default": "Volume" },
+    { "type": "text", "id": "spec_1_value", "label": "Spec 1 value", "default": "750ml" },
+    { "type": "text", "id": "spec_2_label", "label": "Spec 2 label", "default": "Grape" },
+    { "type": "text", "id": "spec_2_value", "label": "Spec 2 value", "default": "Grenache" },
+    { "type": "text", "id": "spec_3_label", "label": "Spec 3 label", "default": "ABV" },
+    { "type": "text", "id": "spec_3_value", "label": "Spec 3 value", "default": "12.5%" }
+  ],
+  "presets": [{ "name": "Featured product" }]
+}
+{% endschema %}

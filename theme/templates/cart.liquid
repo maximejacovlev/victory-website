@@ -1,0 +1,43 @@
+<div class="pdp" style="padding:160px var(--gutter) 80px">
+  <div style="max-width:900px;margin:0 auto">
+    <div class="eyebrow" style="opacity:.5;margin-bottom:24px">— Cart</div>
+    <h1 class="h-l" style="margin-bottom:48px">Your cart.</h1>
+
+    {%- if cart.item_count == 0 -%}
+      <p class="body-l" style="margin-bottom:32px">Your cart is empty.</p>
+      <a href="/collections/all" class="cta cta--ink"><span>Shop the collection</span><span class="arrow">→</span></a>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post" novalidate>
+        <div style="display:flex;flex-direction:column;gap:24px;margin-bottom:48px">
+          {%- for line in cart.items -%}
+            <div class="cart-item" style="grid-template-columns:120px 1fr auto;padding-bottom:24px">
+              <div class="thumb" style="width:120px;height:150px">
+                {%- if line.image -%}
+                  <img src="{{ line.image | image_url: width: 300 }}" alt="">
+                {%- endif -%}
+              </div>
+              <div>
+                <a href="{{ line.url }}" class="name" style="font-size:28px">{{ line.product.title }}</a>
+                <div class="meta">{% unless line.variant.title contains 'Default' %}{{ line.variant.title }}{% endunless %}</div>
+                <div class="qty">
+                  <button type="button" data-qty="-1" data-key="{{ line.key }}">−</button>
+                  <span>{{ line.quantity }}</span>
+                  <button type="button" data-qty="1" data-key="{{ line.key }}">+</button>
+                </div>
+                <a class="cart-item-remove" data-key="{{ line.key }}" data-remove>Remove</a>
+              </div>
+              <div class="price" style="font-size:22px">{{ line.final_line_price | money }}</div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:32px">
+          <span class="eyebrow">Subtotal</span>
+          <span style="font-family:var(--serif);font-size:32px">{{ cart.total_price | money }}</span>
+        </div>
+
+        <button type="submit" name="checkout" class="checkout-btn" style="max-width:320px">Checkout</button>
+      </form>
+    {%- endif -%}
+  </div>
+</div>

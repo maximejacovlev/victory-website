@@ -1,0 +1,64 @@
+{%- comment -%}
+  Product card — used in collection-grid section.
+  Accepts: product, index
+{%- endcomment -%}
+
+{%- assign tag_class = 'product--default' -%}
+{%- for tag in product.tags -%}
+  {%- if tag == 'wine' or tag == 'rose' or tag == 'rosé' -%}{%- assign tag_class = 'product--wine' -%}{%- endif -%}
+  {%- if tag == 'gin' -%}{%- assign tag_class = 'product--gin' -%}{%- endif -%}
+{%- endfor -%}
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<article class="product {{ tag_class }} reveal d{{ index }}"
+         data-product-id="{{ product.id }}"
+         data-product-handle="{{ product.handle }}">
+  <a href="{{ product.url }}" class="product-media">
+    <div class="halo"></div>
+    {%- if product.featured_image -%}
+      <img src="{{ product.featured_image | image_url: width: 800 }}"
+           alt="{{ product.featured_image.alt | default: product.title | escape }}"
+           loading="lazy">
+    {%- else -%}
+      {%- if tag_class == 'product--gin' -%}
+        {%- render 'bottle-svg', kind: 'gin', name: shop.name -%}
+      {%- else -%}
+        {%- render 'bottle-svg', kind: 'rose', name: shop.name -%}
+      {%- endif -%}
+    {%- endif -%}
+  </a>
+
+  <div class="product-body">
+    <div>
+      <a href="{{ product.url }}" class="product-name">{{ product.title }}</a>
+      <div class="product-sub">
+        {%- if product.type != blank -%}{{ product.type }}{%- endif -%}
+        {%- if product.vendor != blank %} · {{ product.vendor }}{%- endif -%}
+      </div>
+    </div>
+    <div class="product-price">
+      {%- if product.compare_at_price > product.price -%}
+        <s>{{ product.compare_at_price | money }}</s>
+      {%- endif -%}
+      {{ product.price | money }}
+    </div>
+    <div class="product-foot">
+      <div class="spec">
+        {%- for tag in product.tags -%}
+          {%- if tag contains 'spec:' -%}
+            <span><b>{{ tag | remove: 'spec:' | strip }}</b></span>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{{ current_variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <button type="submit" class="add-btn" {% unless current_variant.available %}disabled{% endunless %}>
+          <span class="plus">+</span>
+          <span>{% if current_variant.available %}Add{% else %}Sold out{% endif %}</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</article>

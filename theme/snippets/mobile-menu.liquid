@@ -1,0 +1,22 @@
+<div class="menu-overlay" id="menuOverlay">
+  <div class="menu-overlay-top">
+    <span class="brand">{{ shop.name }}</span>
+    <button class="drawer-close" data-close-menu style="background:rgba(245,239,230,.1); color:var(--bone); width:42px; height:42px" aria-label="Close menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+  </div>
+  <nav>
+    {%- assign main_menu = linklists['main-menu'] -%}
+    {%- if main_menu.links.size > 0 -%}
+      {%- for link in main_menu.links -%}
+        <a href="{{ link.url }}"><em>{{ link.title }}</em> →</a>
+      {%- endfor -%}
+    {%- else -%}
+      <a href="/collections/all"><em>Shop</em> →</a>
+      <a href="/pages/story"><em>Maison</em> →</a>
+      <a href="/pages/process"><em>Process</em> →</a>
+      <a href="/blogs/news"><em>Journal</em> →</a>
+      <a href="{{ routes.account_url }}"><em>Account</em> →</a>
+    {%- endif -%}
+  </nav>
+</div>

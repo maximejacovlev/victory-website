@@ -1,0 +1,28 @@
+<section class="section">
+  <div class="container">
+    <div class="collection-head">
+      <h1 class="h-l lead">{{ blog.title }}</h1>
+      <span class="meta">{{ blog.articles_count }} {{ blog.articles_count | pluralize: 'entry', 'entries' }}</span>
+    </div>
+
+    <div class="journal-grid">
+      {%- for article in blog.articles -%}
+        <a href="{{ article.url }}" class="entry">
+          <div class="entry-thumb">
+            {%- if article.image -%}
+              <img src="{{ article.image | image_url: width: 800 }}" alt="{{ article.title | escape }}">
+            {%- else -%}
+              <div class="ph"></div>
+            {%- endif -%}
+          </div>
+          <div class="entry-meta">
+            <span>{{ article.published_at | date: '%d · %B' }}</span>
+            {%- if article.tags.size > 0 -%}<span>{{ article.tags | first }}</span>{%- endif -%}
+          </div>
+          <h3>{{ article.title }}</h3>
+          <p>{{ article.excerpt_or_content | strip_html | truncatewords: 22 }}</p>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>

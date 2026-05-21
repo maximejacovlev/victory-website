@@ -1,0 +1,38 @@
+<section class="section newsletter" data-screen-label="07 Newsletter">
+  <div class="container reveal">
+    <div class="eyebrow" style="opacity:.6; margin-bottom:24px">{{ section.settings.eyebrow }}</div>
+    <h2 class="h-l">{{ section.settings.heading }}</h2>
+    <p>{{ section.settings.body }}</p>
+
+    {% form 'customer', class: 'nl-form', novalidate: 'novalidate' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input type="email" name="contact[email]" placeholder="your@email.com" required aria-label="Email">
+      <button type="submit" name="commit">Subscribe</button>
+      {% if form.posted_successfully? %}
+        <div class="nl-success" style="display:block">Merci — you're on the list.</div>
+      {% else %}
+        <div class="nl-success">Merci — you're on the list.</div>
+      {% endif %}
+      {% if form.errors %}
+        <div class="nl-success" style="display:block;color:#e8c7b8">{{ form.errors | default_errors }}</div>
+      {% endif %}
+    {% endform %}
+
+    {%- if section.settings.legal != blank -%}
+      <div class="legal">{{ section.settings.legal }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "— 07 · Subscribe" },
+    { "type": "html", "id": "heading", "label": "Heading", "default": "Letters from the <em>cellar</em>." },
+    { "type": "textarea", "id": "body", "label": "Body" },
+    { "type": "text", "id": "legal", "label": "Legal line", "default": "Drink responsibly · 18+ · Read our privacy policy" }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

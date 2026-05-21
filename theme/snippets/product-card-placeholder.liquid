@@ -1,0 +1,50 @@
+{%- comment -%}
+  Placeholder product card — shown when no collection is selected
+  in the theme customizer yet. Accepts: kind ('wine' or 'gin')
+{%- endcomment -%}
+
+{%- if kind == 'gin' -%}
+  <article class="product product--gin reveal d2">
+    <div class="product-media">
+      <div class="halo"></div>
+      {%- render 'bottle-svg', kind: 'gin', name: 'Aurore' -%}
+    </div>
+    <div class="product-body">
+      <div>
+        <div class="product-name">Forêt <em>Gin</em></div>
+        <div class="product-sub">Botanical · 18 wild plants</div>
+      </div>
+      <div class="product-price">€44</div>
+      <div class="product-foot">
+        <div class="spec">
+          <span><b>50cl</b></span>
+          <span><b>44%</b> abv</span>
+          <span>Juniper · Iris · Thyme</span>
+        </div>
+        <span class="add-btn" style="opacity:.5">Configure in admin</span>
+      </div>
+    </div>
+  </article>
+{%- else -%}
+  <article class="product product--wine reveal d1">
+    <div class="product-media">
+      <div class="halo"></div>
+      {%- render 'bottle-svg', kind: 'rose', name: 'Aurore' -%}
+    </div>
+    <div class="product-body">
+      <div>
+        <div class="product-name">Cuvée <em>N°7</em></div>
+        <div class="product-sub">Rosé · Provence 2024</div>
+      </div>
+      <div class="product-price">€32</div>
+      <div class="product-foot">
+        <div class="spec">
+          <span><b>75cl</b></span>
+          <span><b>12.5%</b> abv</span>
+          <span>Grenache · Cinsault</span>
+        </div>
+        <span class="add-btn" style="opacity:.5">Configure in admin</span>
+      </div>
+    </div>
+  </article>
+{%- endif -%}

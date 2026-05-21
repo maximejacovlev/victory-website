@@ -1,0 +1,218 @@
+/* =========================================================
+   VICTORY. — Shared theme
+   The beverage only winners drink.
+   ========================================================= */
+
+:root{
+  /* Palette — drawn from Victory bottle labels (olive + cream stripe) */
+  --olive:#4A4E2C;
+  --olive-deep:#2D3018;
+  --olive-soft:#5e6238;
+  --bone:#f0e9d9;          /* warm cream — the stripe cream */
+  --bone-2:#e8dfc9;
+  --cream:#f7f1e2;
+  --ink:#171712;
+  --ink-2:#3a382c;
+  --rule:rgba(23,23,18,.16);
+  --rule-light:rgba(240,233,217,.22);
+
+  /* product accents */
+  --rose:#dba99a;
+  --rouge:#7a1818;
+  --blanc:#c9a85a;          /* gold-ish */
+  --gin-blue:#6e8b8e;
+
+  --serif:"Cormorant Garamond", "Times New Roman", serif;
+  --sans:"Manrope", system-ui, -apple-system, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, monospace;
+
+  --container: 1440px;
+  --gutter: clamp(20px, 4vw, 72px);
+}
+
+*{box-sizing:border-box; margin:0; padding:0}
+html,body{background:var(--bone); color:var(--ink); font-family:var(--sans); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+body{overflow-x:hidden}
+a{color:inherit; text-decoration:none}
+button{font:inherit; color:inherit; background:none; border:none; cursor:pointer}
+img,svg{display:block; max-width:100%}
+
+/* ---------- TYPE ---------- */
+.eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase; font-weight:400}
+.display{font-family:var(--serif); font-weight:400; letter-spacing:-.012em; line-height:.92}
+.display em{font-style:italic; font-weight:300}
+.h-xl{font-family:var(--serif); font-weight:400; font-size:clamp(56px, 11vw, 180px); line-height:.88; letter-spacing:-.02em}
+.h-l{font-family:var(--serif); font-weight:400; font-size:clamp(44px, 6.5vw, 96px); line-height:.95; letter-spacing:-.015em}
+.h-m{font-family:var(--serif); font-weight:400; font-size:clamp(32px, 4vw, 56px); line-height:1.02; letter-spacing:-.01em}
+.body{font-size:15px; line-height:1.55; color:var(--ink-2)}
+.body-l{font-size:18px; line-height:1.5; color:var(--ink-2)}
+
+/* ---------- NAV ---------- */
+.nav{
+  position:fixed; inset:0 0 auto 0; z-index:50;
+  padding:22px var(--gutter);
+  display:flex; align-items:center; justify-content:space-between;
+  mix-blend-mode:difference; color:var(--bone);
+  transition:mix-blend-mode .3s, color .3s, background .3s;
+}
+.nav.solid{ mix-blend-mode:normal; color:var(--ink); background:var(--bone); border-bottom:1px solid var(--rule)}
+.nav.dark{ mix-blend-mode:normal; color:var(--bone); background:transparent}
+.nav-left, .nav-right{display:flex; align-items:center; gap:28px}
+.brand{font-family:var(--serif); font-style:italic; font-size:26px; letter-spacing:.01em; line-height:1}
+.brand-mark{display:inline-flex; align-items:center; line-height:1; position:relative}
+/* Logo lockup — two stacked SVGs swap on .nav.solid */
+.brand-logo{display:block; height:32px; width:auto}
+.brand-logo--dark{display:none}
+.nav.solid .brand-logo--light{display:none}
+.nav.solid .brand-logo--dark{display:block}
+.brand-mark--lg .brand-logo{height:56px}
+.brand-mark--xl .brand-logo{height:80px}
+.nav-link{font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; opacity:.9; position:relative; padding:6px 0}
+.nav-link:after{content:""; position:absolute; left:0; right:100%; bottom:0; height:1px; background:currentColor; transition:right .35s ease}
+.nav-link:hover:after{right:0}
+.nav-cart{display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase}
+.cart-count{
+  min-width:20px; height:20px; padding:0 6px;
+  border-radius:999px; background:currentColor; color:var(--bone);
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:10px; letter-spacing:0;
+}
+.menu-btn{display:none; width:42px; height:42px; border-radius:999px; background:var(--bone); color:var(--ink); align-items:center; justify-content:center}
+.menu-btn svg{width:18px; height:18px}
+
+@media (max-width:860px){
+  .nav-left .nav-link, .nav-right .nav-link{display:none}
+  .menu-btn{display:inline-flex}
+  .brand{font-size:22px}
+}
+
+/* CTAs */
+.cta{
+  display:inline-flex; align-items:center; gap:14px;
+  padding:18px 28px; border-radius:999px;
+  background:var(--bone); color:var(--ink);
+  font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+  transition: transform .3s ease, background .3s ease, color .3s ease, padding-right .3s ease;
+  position:relative; overflow:hidden; border:none; cursor:pointer;
+}
+.cta .arrow{display:inline-block; transition:transform .35s ease}
+.cta:hover{ background:var(--olive); color:var(--bone); padding-right:36px}
+.cta:hover .arrow{transform:translateX(6px)}
+.cta--ghost{background:transparent; color:var(--bone); border:1px solid rgba(240,233,217,.5)}
+.cta--ghost:hover{background:var(--bone); color:var(--ink); border-color:var(--bone)}
+.cta--ink{background:var(--ink); color:var(--bone)}
+.cta--ink:hover{background:var(--olive); color:var(--bone)}
+.cta--olive{background:var(--olive); color:var(--bone)}
+.cta--olive:hover{background:var(--olive-deep); color:var(--bone)}
+
+section{position:relative}
+.section{padding: clamp(80px, 12vh, 160px) var(--gutter)}
+.container{max-width:var(--container); margin:0 auto; width:100%}
+.row{display:grid; grid-template-columns:repeat(12,1fr); gap:24px}
+.rule{height:1px; background:var(--rule); margin:0}
+
+/* Reveal on scroll */
+.reveal{opacity:0; transform:translateY(28px); transition:opacity .9s ease, transform .9s cubic-bezier(.2,.7,.1,1)}
+.reveal.in{opacity:1; transform:translateY(0)}
+.reveal.d1{transition-delay:.08s}
+.reveal.d2{transition-delay:.16s}
+.reveal.d3{transition-delay:.24s}
+.reveal.d4{transition-delay:.32s}
+
+/* ---------- CART DRAWER + SCRIM ---------- */
+.scrim{position:fixed; inset:0; background:rgba(20,18,8,.5); z-index:90; opacity:0; pointer-events:none; transition:opacity .4s; backdrop-filter:blur(6px)}
+.scrim.show{opacity:1; pointer-events:auto}
+.drawer{
+  position:fixed; top:0; right:0; bottom:0; width:min(440px, 92vw);
+  background:var(--cream); z-index:100;
+  transform:translateX(100%); transition:transform .5s cubic-bezier(.2,.7,.1,1);
+  display:flex; flex-direction:column;
+}
+.drawer.show{transform:translateX(0)}
+.drawer-head{padding:24px 28px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--rule)}
+.drawer-head h3{font-family:var(--serif); font-size:28px}
+.drawer-close{width:36px; height:36px; border-radius:999px; display:flex; align-items:center; justify-content:center; transition:background .3s}
+.drawer-close:hover{background:var(--bone-2)}
+.drawer-body{flex:1; overflow:auto; padding:24px 28px; display:flex; flex-direction:column; gap:20px}
+.cart-item{display:grid; grid-template-columns: 80px 1fr auto; gap:16px; align-items:center; padding-bottom:20px; border-bottom:1px solid var(--rule)}
+.cart-item .thumb{width:80px; height:96px; border-radius:10px; background:var(--olive); display:flex; align-items:center; justify-content:center; overflow:hidden}
+.cart-item .thumb img{width:100%; height:100%; object-fit:cover}
+.cart-item .name{font-family:var(--serif); font-size:20px; line-height:1.1}
+.cart-item .meta{font-family:var(--mono); font-size:10px; letter-spacing:.18em; text-transform:uppercase; opacity:.6; margin-top:4px}
+.qty{display:inline-flex; align-items:center; border:1px solid var(--rule); border-radius:999px; margin-top:10px}
+.qty button{width:28px; height:28px; display:flex; align-items:center; justify-content:center}
+.qty span{padding:0 10px; font-family:var(--mono); font-size:12px}
+.cart-item .price{font-family:var(--serif); font-size:18px}
+.drawer-foot{padding:24px 28px; border-top:1px solid var(--rule)}
+.totals{display:flex; justify-content:space-between; margin-bottom:18px; font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase}
+.totals .v{font-family:var(--serif); font-size:22px; letter-spacing:0; text-transform:none}
+.checkout-btn{
+  width:100%; padding:18px; border-radius:999px;
+  background:var(--ink); color:var(--bone);
+  font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+  transition: background .3s;
+}
+.checkout-btn:hover{background:var(--olive)}
+.cart-empty{display:flex; flex-direction:column; align-items:center; gap:14px; padding:60px 20px; text-align:center}
+.cart-empty p{font-family:var(--serif); font-style:italic; font-size:24px}
+.cart-empty small{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; opacity:.6}
+
+/* mobile menu */
+.menu-overlay{
+  position:fixed; inset:0; z-index:95;
+  background:var(--olive-deep); color:var(--bone);
+  padding: 24px var(--gutter);
+  transform:translateY(-100%); transition:transform .5s cubic-bezier(.2,.7,.1,1);
+  display:flex; flex-direction:column;
+}
+.menu-overlay.show{transform:translateY(0)}
+.menu-overlay-top{display:flex; justify-content:space-between; align-items:center}
+.menu-overlay nav{flex:1; display:flex; flex-direction:column; justify-content:center; gap:14px}
+.menu-overlay nav a{font-family:var(--serif); font-size:48px; line-height:1; letter-spacing:-.01em}
+.menu-overlay nav a em{font-style:italic}
+
+.toast{
+  position:fixed; bottom:24px; left:50%; transform:translate(-50%, 200%);
+  background:var(--ink); color:var(--bone); padding:14px 22px; border-radius:999px;
+  font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  z-index:120; transition:transform .4s cubic-bezier(.2,.7,.1,1);
+}
+.toast.show{transform:translate(-50%, 0)}
+
+/* ---------- FOOTER ---------- */
+footer{background:var(--olive-deep); color:var(--bone); padding: 80px var(--gutter) 32px; border-top:1px solid rgba(240,233,217,.1)}
+.footer-grid{display:grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap:48px; padding-bottom:60px}
+.foot-brand .brand-mark{margin-bottom:18px}
+.foot-brand .brand-logo{height:64px}
+.foot-brand p{max-width:30ch; color:rgba(240,233,217,.6); font-size:14px; line-height:1.55; margin-top:18px}
+.foot-col h4{font-family:var(--mono); font-size:10px; letter-spacing:.22em; text-transform:uppercase; opacity:.5; margin-bottom:18px}
+.foot-col ul{list-style:none; display:flex; flex-direction:column; gap:10px}
+.foot-col a{font-family:var(--serif); font-size:18px; opacity:.9; transition:opacity .3s}
+.foot-col a:hover{opacity:.6}
+.foot-bottom{display:flex; justify-content:space-between; align-items:center; padding-top:32px; border-top:1px solid rgba(240,233,217,.1); font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.5}
+.foot-mark{
+  font-family:var(--serif); font-style:italic; font-size:clamp(80px, 18vw, 240px);
+  text-align:center; line-height:1; letter-spacing:-.02em;
+  color:rgba(240,233,217,.06);
+  padding: 40px 0 20px;
+  user-select:none;
+}
+@media (max-width:860px){
+  .footer-grid{grid-template-columns:1fr 1fr; gap:32px}
+  .foot-brand{grid-column:1/-1}
+  .foot-bottom{flex-direction:column; gap:14px}
+}
+
+/* ---------- VERTICAL STRIPE MOTIF (from bottle label) ---------- */
+.stripe-bg{
+  background-image:
+    repeating-linear-gradient(90deg,
+      var(--olive) 0 28px,
+      var(--bone) 28px 56px);
+}
+.stripe-bg-thin{
+  background-image:
+    repeating-linear-gradient(90deg,
+      var(--olive) 0 8px,
+      var(--bone) 8px 16px);
+}

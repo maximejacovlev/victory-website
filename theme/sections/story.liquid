@@ -1,0 +1,52 @@
+<section class="section story" id="story" data-screen-label="03 Story">
+  <div class="container">
+    <div class="row">
+      <div class="story-copy reveal">
+        <div class="eyebrow" style="margin-bottom:32px; opacity:.7">{{ section.settings.eyebrow }}</div>
+        <h2 class="h-l">{{ section.settings.heading }}</h2>
+        {%- if section.settings.body_1 != blank -%}
+          <p style="margin-top:32px">{{ section.settings.body_1 }}</p>
+        {%- endif -%}
+        {%- if section.settings.body_2 != blank -%}
+          <p style="margin-top:18px">{{ section.settings.body_2 }}</p>
+        {%- endif -%}
+        {%- if section.settings.signature != blank -%}
+          <div class="signature">
+            {{ section.settings.signature }}
+            <small>{{ section.settings.signature_role }}</small>
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="story-art reveal d2">
+        <div class="frame">
+          {%- if section.settings.image != blank -%}
+            <img src="{{ section.settings.image | image_url: width: 1200 }}" alt="" loading="lazy">
+          {%- endif -%}
+        </div>
+        {%- if section.settings.badge_text != blank -%}
+          <div class="badge">
+            {{ section.settings.badge_text }}<span class="y">{{ section.settings.badge_year }}</span>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Story",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "— 03 · La Maison" },
+    { "type": "html", "id": "heading", "label": "Heading", "default": "Patience, <em>poured</em> into glass." },
+    { "type": "textarea", "id": "body_1", "label": "Paragraph 1" },
+    { "type": "textarea", "id": "body_2", "label": "Paragraph 2" },
+    { "type": "text", "id": "signature", "label": "Signature", "default": "Camille &amp; Léo Aurore" },
+    { "type": "text", "id": "signature_role", "label": "Signature role", "default": "Founders · Vintners · Distillers" },
+    { "type": "image_picker", "id": "image", "label": "Vineyard image (optional)" },
+    { "type": "text", "id": "badge_text", "label": "Badge text", "default": "Aurore" },
+    { "type": "text", "id": "badge_year", "label": "Badge year", "default": "EST · 2019" }
+  ],
+  "presets": [{ "name": "Story" }]
+}
+{% endschema %}

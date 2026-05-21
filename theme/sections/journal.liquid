@@ -1,0 +1,86 @@
+<section class="section journal" id="journal" data-screen-label="06 Journal">
+  <div class="container">
+    <div class="collection-head reveal">
+      <h2 class="h-l lead">{{ section.settings.heading }}</h2>
+      <span class="meta">{{ section.settings.meta }}</span>
+    </div>
+
+    <div class="journal-grid">
+      {%- assign blog_obj = blogs[section.settings.blog] -%}
+      {%- if blog_obj and blog_obj.articles.size > 0 -%}
+        {%- for article in blog_obj.articles limit: 3 -%}
+          <a href="{{ article.url }}" class="entry reveal d{{ forloop.index }}">
+            <div class="entry-thumb">
+              {%- if article.image -%}
+                <img src="{{ article.image | image_url: width: 800 }}" alt="{{ article.title | escape }}">
+              {%- else -%}
+                <div class="ph"></div>
+                <span class="label">{{ article.title | truncate: 40 }}</span>
+              {%- endif -%}
+            </div>
+            <div class="entry-meta">
+              <span>{{ article.published_at | date: '%d · %B' }}</span>
+              {%- if article.tags.size > 0 -%}<span>{{ article.tags | first }}</span>{%- endif -%}
+            </div>
+            <h3>{{ article.title }}</h3>
+            <p>{{ article.excerpt_or_content | strip_html | truncatewords: 22 }}</p>
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          <a href="{{ block.settings.link }}" class="entry reveal d{{ forloop.index }}" {{ block.shopify_attributes }}>
+            <div class="entry-thumb">
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 800 }}" alt="">
+              {%- else -%}
+                <div class="ph"></div>
+                <span class="label">{{ block.settings.placeholder_label }}</span>
+              {%- endif -%}
+            </div>
+            <div class="entry-meta">
+              <span>{{ block.settings.date }}</span>
+              <span>{{ block.settings.tag }}</span>
+            </div>
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.body }}</p>
+          </a>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Journal",
+  "settings": [
+    { "type": "html", "id": "heading", "label": "Heading", "default": "Field <em>notes</em>." },
+    { "type": "text", "id": "meta", "label": "Meta", "default": "06 — Journal" },
+    { "type": "blog", "id": "blog", "label": "Blog to pull from (if empty, fallback blocks used)" }
+  ],
+  "blocks": [
+    {
+      "type": "entry",
+      "name": "Placeholder entry",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "placeholder_label", "label": "Placeholder label", "default": "Vineyard — placeholder image" },
+        { "type": "text", "id": "date", "label": "Date", "default": "14 · May" },
+        { "type": "text", "id": "tag", "label": "Tag", "default": "Vintage" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Why we pick before sunrise." },
+        { "type": "textarea", "id": "body", "label": "Excerpt" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [{
+    "name": "Journal",
+    "blocks": [
+      { "type": "entry" },
+      { "type": "entry" },
+      { "type": "entry" }
+    ]
+  }]
+}
+{% endschema %}
