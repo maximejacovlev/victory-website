@@ -202,6 +202,7 @@ async function addToCart(id, qty=1){
     openDrawer();
     toast(`${p.title} — added`);
   } catch (e) {
+    console.error('[addToCart]', e);
     toast(e.message || 'Could not add to cart');
   } finally {
     if (btn) btn.removeAttribute('disabled');
