@@ -5,39 +5,35 @@
 const PRODUCTS = {
   'victory-rose': {
     title: 'Victory Rosé',
-    sub:   'St. Tropez · 75cl',
-    price: 3600,
+    sub:   'St. Tropez',
+    price: 1790,
     variant: '40123456789',
     image: 'assets/rose-1.png',
-    href: 'products/rose.html',
-    shopifyProductId: '15924690420094',
+    href: 'products/rose.html'
   },
   'victory-gin': {
     title: 'Victory Gin',
-    sub:   'London Dry · 50cl',
-    price: 4800,
+    sub:   'London Dry',
+    price: 2990,
     variant: '40123456790',
     image: 'assets/gin-1.png',
-    href: 'products/gin.html',
-    shopifyProductId: '15924690616702',
+    href: 'products/gin.html'
   },
   'victory-rouge': {
     title: 'Victory Rouge',
-    sub:   'St. Tropez · 75cl',
-    price: 4200,
+    sub:   'St. Tropez',
+    price: 2990,
     variant: '40123456791',
     image: 'assets/rouge-1.png',
-    href: 'products/rouge.html',
-    shopifyProductId: '15924690190718',
+    href: 'products/rouge.html'
   },
   'victory-blanc': {
     title: 'Victory Blanc',
-    sub:   'Sancerre · 75cl',
-    price: 4000,
+    sub:   'Sancerre',
+    price: 2990,
     variant: '40123456792',
     image: 'assets/blanc-1.png',
-    href: 'products/blanc.html',
-    shopifyProductId: '15924689666430',
+    href: 'products/blanc.html'
   }
 };
 
@@ -52,114 +48,66 @@ function rebasePaths(prefix){
 const cart = JSON.parse(localStorage.getItem('victory-cart') || '[]');
 function persistCart(){ localStorage.setItem('victory-cart', JSON.stringify(cart)); }
 
-function usesShopify(product){
-  return !!(product && product.shopifyProductId && window.VictoryShopify);
-}
-
-async function addToShopifyCart(product, qty){
-  if (!usesShopify(product)) {
-    console.log('[Shopify-stub] POST /cart/add.js', {id: product.variant, quantity: qty});
-    return { ok: true };
-  }
-  await window.VictoryShopify.init();
-  return window.VictoryShopify.addLineItem(product.shopifyProductId, qty);
+async function addToShopifyCart(variantId, qty){
+  // Replace with: fetch('/cart/add.js', {...})
+  console.log('[Shopify-stub] POST /cart/add.js', {id: variantId, quantity: qty});
+  return { ok:true };
 }
 
 const $  = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => [...r.querySelectorAll(s)];
 
-function fmt(cents){ return '€' + (cents/100).toFixed(0); }
+function fmt(cents){ return '€' + (cents/100).toFixed(2).replace('.', ','); }
 
-function localCartLines(){
-  return cart.filter((line) => !usesShopify(PRODUCTS[line.id]));
+// A cart line is {id, qty, size, price}. `size` + `price` are optional and
+// only set when a product page picked a non-default format.
+function lineKey(l){ return l.id + '::' + (l.size || ''); }
+function linePrice(l){ return l.price != null ? l.price : (PRODUCTS[l.id]?.price || 0); }
+function lineSub(l){
+  const p = PRODUCTS[l.id];
+  return l.size ? (p ? p.sub + ' · ' + l.size : l.size) : (p ? p.sub : '');
 }
 
-function renderLocalLine(line){
-  const p = PRODUCTS[line.id]; if(!p) return '';
-  return `
-    <div class="cart-item">
-      <div class="thumb"><img src="${p.image}" alt=""></div>
-      <div>
-        <div class="name">${p.title}</div>
-        <div class="meta">${p.sub}</div>
-        <div class="qty">
-          <button onclick="changeQty('${line.id}', -1)" aria-label="Decrease">−</button>
-          <span>${line.qty}</span>
-          <button onclick="changeQty('${line.id}', 1)" aria-label="Increase">+</button>
-        </div>
-      </div>
-      <div class="price">${fmt(p.price * line.qty)}</div>
-    </div>
-  `;
-}
-
-function renderShopifyLine(line){
-  const meta = line.variantTitle ? `<div class="meta">${line.variantTitle}</div>` : '';
-  const thumb = line.image ? `<img src="${line.image}" alt="">` : '';
-  const price = window.VictoryShopify.money(line.linePrice || line.unitPrice * line.quantity);
-  return `
-    <div class="cart-item" data-shopify-line="${line.id}">
-      <div class="thumb">${thumb}</div>
-      <div>
-        <div class="name">${line.title}</div>
-        ${meta}
-        <div class="qty">
-          <button onclick="changeShopifyQty('${line.id}', -1)" aria-label="Decrease">−</button>
-          <span>${line.quantity}</span>
-          <button onclick="changeShopifyQty('${line.id}', 1)" aria-label="Increase">+</button>
-        </div>
-      </div>
-      <div class="price">${price}</div>
-    </div>
-  `;
-}
-
-async function renderCart(){
+function renderCart(){
   const body = $('#drawerBody');
   const foot = $('#drawerFoot');
-  const cc = $('#cartCount');
+  const count = cart.reduce((s,l)=>s+l.qty,0);
+  const cc = $('#cartCount'); if(cc) cc.textContent = count;
+  if(!body) return;
 
-  let shopifySummary = { count: 0, lines: [], total: 0 };
-  if (window.VictoryShopify) {
-    try {
-      await window.VictoryShopify.init();
-      shopifySummary = await window.VictoryShopify.getCartSummary();
-    } catch (e) {
-      console.error('[VictoryShopify]', e);
-    }
-  }
-
-  const localLines = localCartLines();
-  const localCount = localLines.reduce((s, l) => s + l.qty, 0);
-  const count = localCount + shopifySummary.count;
-  if (cc) cc.textContent = count;
-  if (!body) return;
-
-  if (!count) {
+  if(!cart.length){
     body.innerHTML = `<div class="cart-empty"><p>Empty for now.</p><small>Add a bottle and it will rest here.</small></div>`;
-    if (foot) foot.style.display = 'none';
+    if (window.translateNode && window.__lang) translateNode(body, window.__lang);
+    if(foot) foot.style.display = 'none';
     return;
   }
+  if(foot) foot.style.display = '';
+  body.innerHTML = cart.map(line => {
+    const p = PRODUCTS[line.id]; if(!p) return '';
+    return `
+      <div class="cart-item">
+        <div class="thumb"><img src="${p.image}" alt=""></div>
+        <div>
+          <div class="name">${p.title}</div>
+          <div class="meta">${lineSub(line)}</div>
+          <div class="qty">
+            <button onclick="changeQty('${lineKey(line)}', -1)" aria-label="Decrease">−</button>
+            <span>${line.qty}</span>
+            <button onclick="changeQty('${lineKey(line)}', 1)" aria-label="Increase">+</button>
+          </div>
+        </div>
+        <div class="price">${fmt(linePrice(line) * line.qty)}</div>
+      </div>
+    `;
+  }).join('');
 
-  if (foot) foot.style.display = '';
-  const html = [
-    ...shopifySummary.lines.map(renderShopifyLine),
-    ...localLines.map(renderLocalLine),
-  ].join('');
-  body.innerHTML = html;
-
-  const localTotal = localLines.reduce((s, l) => s + (PRODUCTS[l.id]?.price || 0) * l.qty, 0);
-  const totalCents = localTotal + Math.round(shopifySummary.total * 100);
-  const ct = $('#cartTotal');
-  if (ct) {
-    ct.textContent = shopifySummary.lines.length && !localLines.length
-      ? window.VictoryShopify.money(shopifySummary.total)
-      : fmt(totalCents);
-  }
+  const total = cart.reduce((s,l)=> s + linePrice(l) * l.qty, 0);
+  const ct = $('#cartTotal'); if(ct) ct.textContent = fmt(total);
+  if (window.translateNode && window.__lang) translateNode(body, window.__lang);
 }
 
-function changeQty(id, delta){
-  const line = cart.find(l=>l.id===id);
+function changeQty(key, delta){
+  const line = cart.find(l => lineKey(l) === key);
   if(!line) return;
   line.qty += delta;
   if(line.qty <= 0) cart.splice(cart.indexOf(line), 1);
@@ -167,66 +115,20 @@ function changeQty(id, delta){
   renderCart();
 }
 
-async function changeShopifyQty(lineItemId, delta){
-  if (!window.VictoryShopify) return;
-  try {
-    await window.VictoryShopify.init();
-    const summary = await window.VictoryShopify.getCartSummary();
-    const line = summary.lines.find((l) => l.id === lineItemId);
-    if (!line) return;
-    await window.VictoryShopify.changeLineQuantity(lineItemId, line.quantity + delta);
-    await renderCart();
-  } catch (e) {
-    toast(e.message || 'Could not update cart');
-  }
-}
-window.changeShopifyQty = changeShopifyQty;
-
-async function addToCart(id, qty=1){
+async function addToCart(id, qty=1, opts={}){
   const p = PRODUCTS[id];
   if(!p) return;
-
-  const btn = document.querySelector(`[data-add="${id}"]`);
-  if (btn) btn.setAttribute('disabled', '');
-
-  try {
-    if (usesShopify(p)) {
-      await addToShopifyCart(p, qty);
-    } else {
-      const line = cart.find(l=>l.id===id);
-      if(line) line.qty += qty; else cart.push({id, qty});
-      await addToShopifyCart(p, qty);
-      persistCart();
-    }
-    await renderCart();
-    openDrawer();
-    toast(`${p.title} — added`);
-  } catch (e) {
-    console.error('[addToCart]', e);
-    toast(e.message || 'Could not add to cart');
-  } finally {
-    if (btn) btn.removeAttribute('disabled');
-  }
+  const size  = opts.size || null;
+  const price = opts.price != null ? opts.price : p.price;
+  const key   = id + '::' + (size || '');
+  const line  = cart.find(l => lineKey(l) === key);
+  if(line) line.qty += qty; else cart.push({id, qty, size, price});
+  await addToShopifyCart(opts.variant || p.variant, qty);
+  persistCart();
+  renderCart();
+  openDrawer();
+  toast(`${p.title} — added`);
 }
-
-async function goToCheckout(){
-  if (!window.VictoryShopify) {
-    toast('Checkout unavailable');
-    return;
-  }
-  try {
-    await window.VictoryShopify.init();
-    const summary = await window.VictoryShopify.getCartSummary();
-    if (!summary.count) {
-      toast('Your cart is empty');
-      return;
-    }
-    await window.VictoryShopify.redirectToCheckout();
-  } catch (e) {
-    toast(e.message || 'Checkout unavailable');
-  }
-}
-window.goToCheckout = goToCheckout;
 
 function openDrawer(){ $('#drawer')?.classList.add('show'); $('#scrim')?.classList.add('show'); }
 function closeDrawer(){ $('#drawer')?.classList.remove('show'); $('#scrim')?.classList.remove('show'); }
@@ -253,7 +155,6 @@ function wireUi(){
   $$('[data-add]').forEach(btn => {
     btn.addEventListener('click', () => addToCart(btn.dataset.add, parseInt(btn.dataset.qty || '1', 10)));
   });
-  $('#checkoutBtn')?.addEventListener('click', goToCheckout);
 
   // reveal on scroll
   const io = new IntersectionObserver((entries) => {

@@ -71,6 +71,33 @@ img,svg{display:block; max-width:100%}
 .nav-link:after{content:""; position:absolute; left:0; right:100%; bottom:0; height:1px; background:currentColor; transition:right .35s ease}
 .nav-link:hover:after{right:0}
 .nav-cart{display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase}
+
+/* ---------- LANGUAGE SWITCHER ---------- */
+.lang-switch{position:relative}
+.lang-toggle{display:inline-flex; align-items:center; gap:7px; font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; padding:6px 0; opacity:.9; transition:opacity .25s}
+.lang-toggle:hover{opacity:1}
+.lang-toggle svg{flex:none; opacity:.8}
+.lang-menu{
+  position:absolute; top:calc(100% + 14px); right:0; z-index:60;
+  min-width:180px; padding:6px;
+  background:var(--cream); color:var(--ink);
+  border:1px solid var(--rule); border-radius:14px;
+  box-shadow:0 24px 48px -24px rgba(20,18,8,.5);
+  display:flex; flex-direction:column; gap:2px;
+  opacity:0; transform:translateY(-6px); pointer-events:none;
+  transition:opacity .25s, transform .25s;
+}
+.lang-switch.open .lang-menu{opacity:1; transform:translateY(0); pointer-events:auto}
+.lang-opt{
+  display:flex; align-items:baseline; gap:10px; width:100%;
+  padding:10px 12px; border-radius:9px; text-align:left;
+  transition:background .2s;
+}
+.lang-opt:hover{background:var(--bone-2)}
+.lang-opt b{font-family:var(--mono); font-size:10px; letter-spacing:.2em; font-weight:500; min-width:24px}
+.lang-opt span{font-family:var(--serif); font-size:17px}
+.lang-opt.active{background:var(--olive); color:var(--bone)}
+@media (max-width:860px){.lang-switch{display:none}}
 .cart-count{
   min-width:20px; height:20px; padding:0 6px;
   border-radius:999px; background:currentColor; color:var(--bone);

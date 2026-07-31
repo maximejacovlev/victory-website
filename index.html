@@ -82,7 +82,6 @@
   overflow:visible;
   isolation:isolate;
   display:flex; align-items:center; justify-content:center;
-  transform:rotate(-3deg);
   filter: drop-shadow(0 40px 60px rgba(0,0,0,.5));
 }
 
@@ -188,7 +187,6 @@
   position:absolute; left:0; right:0; bottom:-46px;
   display:flex; align-items:center; justify-content:center; gap:14px;
   z-index:6;
-  transform:rotate(3deg);
   color:var(--bone);
 }
 .hc-arrow{
@@ -495,6 +493,8 @@
 .ig-overlay b{font-weight:500; display:inline-flex; align-items:center; gap:6px}
 .ig-overlay svg{flex:none}
 .ig-tile:hover .ig-overlay{opacity:1}
+.ig-tile--empty{background:var(--bone-2); border:1px dashed var(--rule); display:flex; align-items:center; justify-content:center; text-align:center; padding:20px}
+.ig-slot{font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.45; line-height:1.6}
 .ig-tile .ig-reel-badge{
   position:absolute; top:12px; right:12px; z-index:2;
   width:30px; height:30px; border-radius:999px;
@@ -616,12 +616,14 @@
     </button>
     <a href="#shop" class="nav-link">Shop</a>
     <a href="#story" class="nav-link">Maison</a>
+    <a href="#maker" class="nav-link">Founder</a>
+    <a href="#journal" class="nav-link">Journal</a>
   </div>
   <a href="index.html" class="brand-mark" aria-label="Victory home">
     <img class="brand-logo brand-logo--light" src="assets/logo-blanc.svg" alt="Victory."><img class="brand-logo brand-logo--dark" src="assets/logo-vert.svg" alt="Victory.">
   </a>
   <div class="nav-right">
-    <a href="#" class="nav-link">EN / FR</a>
+    <div class="lang-switch" id="langSwitch"></div>
     <a href="#" class="nav-link">Account</a>
     <button class="nav-cart" id="cartBtn" aria-label="Cart">
       <span>Cart</span>
@@ -648,7 +650,7 @@
       <h1 class="display hero-title h-xl">
         <span class="line"><span>Only</span></span>
         <span class="line"><span><em>winners</em></span></span>
-        <span class="line"><span>drink this.</span></span>
+        <span class="line"><span>drink.</span></span>
       </h1>
 
       <p class="hero-tagline">Rosé, Gin, Rouge, Blanc — four bottles for the days that turn into nights.</p>
@@ -767,10 +769,10 @@
         <div class="product-body">
           <a href="products/rose.html">
             <div class="product-name">Victory <em>Rosé</em></div>
-            <div class="product-sub">St. Tropez · 75cl · 12.5%</div>
+            <div class="product-sub">St. Tropez · 75cl–300cl · 12.5%</div>
           </a>
           <div class="product-row">
-            <div class="product-price">€36</div>
+            <div class="product-price">€17,90</div>
             <button class="add-btn" data-add="victory-rose">
               <span class="plus">+</span><span>Add</span>
             </button>
@@ -793,7 +795,7 @@
             <div class="product-sub">London Dry · 50cl · 44%</div>
           </a>
           <div class="product-row">
-            <div class="product-price">€48</div>
+            <div class="product-price">€29,90</div>
             <button class="add-btn" data-add="victory-gin">
               <span class="plus">+</span><span>Add</span>
             </button>
@@ -813,10 +815,10 @@
         <div class="product-body">
           <a href="products/rouge.html">
             <div class="product-name">Victory <em>Rouge</em></div>
-            <div class="product-sub">St. Tropez · 75cl · 13.5%</div>
+            <div class="product-sub">St. Tropez · 75cl–150cl · 13.5%</div>
           </a>
           <div class="product-row">
-            <div class="product-price">€42</div>
+            <div class="product-price">€29,90</div>
             <button class="add-btn" data-add="victory-rouge">
               <span class="plus">+</span><span>Add</span>
             </button>
@@ -836,10 +838,10 @@
         <div class="product-body">
           <a href="products/blanc.html">
             <div class="product-name">Victory <em>Blanc</em></div>
-            <div class="product-sub">Sancerre, Loire · 75cl · 12.5%</div>
+            <div class="product-sub">Sancerre · 75cl–150cl · 12.5%</div>
           </a>
           <div class="product-row">
-            <div class="product-price">€40</div>
+            <div class="product-price">€29,90</div>
             <button class="add-btn" data-add="victory-blanc">
               <span class="plus">+</span><span>Add</span>
             </button>
@@ -959,7 +961,7 @@
         </p>
         <div class="maker-signature">
           <span class="sig-name">Founder, Maison Victory</span>
-          <span class="sig-name-italic">— Victoria J. Hubert-Rotschild</span>
+          <span class="sig-name-italic">— Victoria J. Huber-Rotschild</span>
         </div>
       </div>
     </div>
@@ -971,7 +973,7 @@
           <div class="eyebrow" style="opacity:.55; margin-bottom:14px">— 05·b · Instagram</div>
           <h3 class="h-m">Follow the <em>founder</em>.</h3>
         </div>
-        <a href="https://www.instagram.com/v.j.huber/" class="ig-handle" target="_blank" rel="noopener noreferrer">
+        <a href="#" class="ig-handle" target="_blank" rel="noopener">
           <svg class="ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>
           <span>@VICTORIA J.
 </span>
@@ -980,31 +982,28 @@
       </div>
 
       <div class="ig-grid reveal d1">
-        <a class="ig-tile" href="https://www.instagram.com/v.j.huber/" target="_blank" rel="noopener noreferrer" aria-label="Instagram post">
+        <a class="ig-tile" href="#" aria-label="Instagram post">
           <img src="assets/ig-1.jpg" alt="">
           <span class="ig-overlay">
             <b><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/></svg> 2.4k</b>
             <b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 12c0 4.97-4.03 9-9 9-1.4 0-2.7-.32-3.9-.89L3 21l.89-5.1A8.96 8.96 0 0 1 3 12c0-4.97 4.03-9 9-9s9 4.03 9 9z"/></svg> 82</b>
           </span>
         </a>
-        <a class="ig-tile" href="https://www.instagram.com/v.j.huber/" target="_blank" rel="noopener noreferrer" aria-label="Instagram reel">
-          <video src="assets/ig-4.mp4" autoplay muted loop playsinline></video>
-          <span class="ig-reel-badge" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M5 4l14 8-14 8V4z"/></svg>
-          </span>
+        <a class="ig-tile" href="#" aria-label="Instagram post">
+          <img src="assets/ig-4.jpg" alt="">
           <span class="ig-overlay">
-            <b><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/></svg> 8.1k</b>
-            <b>REEL</b>
+            <b><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/></svg> 5.3k</b>
+            <b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 12c0 4.97-4.03 9-9 9-1.4 0-2.7-.32-3.9-.89L3 21l.89-5.1A8.96 8.96 0 0 1 3 12c0-4.97 4.03-9 9-9s9 4.03 9 9z"/></svg> 147</b>
           </span>
         </a>
-        <a class="ig-tile" href="https://www.instagram.com/v.j.huber/" target="_blank" rel="noopener noreferrer" aria-label="Instagram post">
+        <a class="ig-tile" href="#" aria-label="Instagram post">
           <img src="assets/ig-2.jpg" alt="">
           <span class="ig-overlay">
             <b><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/></svg> 4.6k</b>
             <b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 12c0 4.97-4.03 9-9 9-1.4 0-2.7-.32-3.9-.89L3 21l.89-5.1A8.96 8.96 0 0 1 3 12c0-4.97 4.03-9 9-9s9 4.03 9 9z"/></svg> 218</b>
           </span>
         </a>
-        <a class="ig-tile" href="https://www.instagram.com/v.j.huber/" target="_blank" rel="noopener noreferrer" aria-label="Instagram post">
+        <a class="ig-tile" href="#" aria-label="Instagram post">
           <img src="assets/ig-3.jpg" alt="">
           <span class="ig-overlay">
             <b><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/></svg> 3.7k</b>
@@ -1053,7 +1052,7 @@
             <span>Shop Rosé</span>
             <span class="arrow">→</span>
           </a>
-          <span style="font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; opacity:.6">€36 · In stock</span>
+          <span style="font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; opacity:.6">From €17,90 · In stock</span>
         </div>
       </div>
     </div>
@@ -1173,7 +1172,7 @@
       <span>Subtotal</span>
       <span class="v" id="cartTotal">€0</span>
     </div>
-    <button type="button" class="checkout-btn" id="checkoutBtn">Checkout</button>
+    <button class="checkout-btn" onclick="toast('Redirecting to Shopify checkout…')">Checkout — Shopify</button>
     <div style="font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.45; margin-top:14px; text-align:center">Shipping &amp; taxes calculated at checkout</div>
   </div>
 </aside>
@@ -1196,8 +1195,8 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="assets/shopify-storefront.js"></script>
 <script src="assets/site.js"></script>
+<script src="assets/i18n.js"></script>
 <script>
 // Nav solid-on-scroll
 const nav  = document.getElementById('nav');

@@ -153,6 +153,7 @@ section{position:relative}
 .product-sub{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;opacity:.55;margin-top:8px}
 .product-price{font-family:var(--serif);font-size:22px;align-self:start}
 .product-price s{opacity:.4;margin-right:6px;font-size:.8em}
+.product-price .from{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.5;margin-right:4px}
 .product-foot{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:20px;border-top:1px solid var(--rule);flex-wrap:wrap;gap:14px}
 .spec{display:flex;gap:18px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.7;flex-wrap:wrap}
 .spec span{display:flex;align-items:center;gap:6px}

@@ -51,12 +51,13 @@
     <a href="../index.html#shop" class="nav-link">Shop</a>
     <a href="../index.html#story" class="nav-link">Maison</a>
     <a href="../index.html#why" class="nav-link">Why Victory</a>
+    <a href="../index.html#journal" class="nav-link">Journal</a>
   </div>
   <a href="../index.html" class="brand-mark" aria-label="Victory home">
     <img class="brand-logo brand-logo--light" src="../assets/logo-blanc.svg" alt="Victory."><img class="brand-logo brand-logo--dark" src="../assets/logo-vert.svg" alt="Victory.">
   </a>
   <div class="nav-right">
-    <a href="#" class="nav-link">EN / FR</a>
+    <div class="lang-switch" id="langSwitch"></div>
     <a href="#" class="nav-link">Account</a>
     <button class="nav-cart" id="cartBtn" aria-label="Cart">
       <span>Cart</span>
@@ -90,14 +91,33 @@
       <p class="pdp-tag">The wine only winners drink — for those who never settle.</p>
 
       <div class="pdp-meta-row">
-        <span><b>750ml</b></span>
+        <span><b><span id="pdpVol" data-no-i18n>75cl</span></b></span>
         <span><b>13.5%</b> abv</span>
         <span>St. Tropez</span>
         <span>Grenache · Syrah · Mourvèdre</span>
       </div>
 
+      <div class="pdp-variants" id="pdpVariants" data-no-i18n>
+        <span class="k">Format</span>
+        <div class="pdp-var-grid">
+          <button class="pdp-var active" data-size="75cl" data-cents="2990" data-variant="40123456791">
+            <span class="size">75cl</span>
+            <span class="fmt">Bouteille</span>
+            <span class="amt">€29,90</span>
+            <span class="per">€39,87 / L</span>
+          </button>
+          <button class="pdp-var" data-size="150cl" data-cents="7990" data-variant="40123456795">
+            <span class="tagline">Popular</span>
+            <span class="size">150cl</span>
+            <span class="fmt">Magnum</span>
+            <span class="amt">€79,90</span>
+            <span class="per">€53,27 / L</span>
+          </button>
+        </div>
+      </div>
+
       <div class="pdp-price">
-        €42
+        <span id="pdpPrice" data-no-i18n>€29,90</span>
         <span class="unit">incl. tax</span>
       </div>
 
@@ -110,7 +130,7 @@
             <span class="pdp-sub-title">One-time <em>purchase</em></span>
             <span class="pdp-sub-meta">Ships once · No commitment</span>
           </span>
-          <span class="pdp-sub-price">€42</span>
+          <span class="pdp-sub-price" id="subPriceOne" data-no-i18n>€29,90</span>
         </label>
 
         <label class="pdp-sub-opt" data-sub="true">
@@ -120,7 +140,7 @@
             <span class="pdp-sub-title">Subscribe &amp; <em>save</em><span class="pdp-sub-save">−10%</span></span>
             <span class="pdp-sub-meta">Auto-renews · Skip or cancel anytime</span>
           </span>
-          <span class="pdp-sub-price"><span class="strike">€42</span>€38</span>
+          <span class="pdp-sub-price"><span class="strike" id="subPriceStrike" data-no-i18n>€29,90</span><span id="subPriceSave" data-no-i18n>€26,91</span></span>
         </label>
         <div class="pdp-sub-expand">
           <div class="pdp-sub-meta" style="opacity:.85">Delivery frequency</div>
@@ -140,8 +160,8 @@
           <span id="qty">1</span>
           <button id="qtyUp" aria-label="Increase">+</button>
         </div>
-        <button class="pdp-add" id="pdpAdd" data-add="victory-rouge">
-          <span>Add to cart — €42</span>
+        <button class="pdp-add" id="pdpAdd" data-no-i18n>
+          <span>Add to cart</span>
           <span class="arrow">→</span>
         </button>
       </div>
@@ -311,7 +331,7 @@
       <span>Subtotal</span>
       <span class="v" id="cartTotal">€0</span>
     </div>
-    <button type="button" class="checkout-btn" id="checkoutBtn">Checkout</button>
+    <button class="checkout-btn" onclick="toast('Redirecting to Shopify checkout…')">Checkout — Shopify</button>
     <div style="font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.45; margin-top:14px; text-align:center">Shipping &amp; taxes calculated at checkout</div>
   </div>
 </aside>
@@ -334,8 +354,8 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="../assets/shopify-storefront.js"></script>
 <script src="../assets/site.js"></script>
+<script src="../assets/i18n.js"></script>
 <script>
 // asset paths in PRODUCTS need parent prefix for product pages
 rebasePaths('../');
@@ -354,16 +374,73 @@ document.querySelectorAll('.pdp-thumb').forEach(t => {
 const subOpts = document.querySelectorAll('.pdp-sub-opt');
 let isSubscription = false;
 let freqMonths = 2;
-const PRICE_FULL = 42;
-const PRICE_SUB  = 38;
+let PRICE_CENTS   = 2990;
+let ACTIVE_SIZE   = '75cl';
+let ACTIVE_VARIANT= '40123456791';
+const SUB_DISCOUNT = 0.9;
+const euro = c => '€' + (c/100).toFixed(2).replace('.', ',');
 
+document.querySelectorAll('.pdp-var').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.pdp-var').forEach(o => o.classList.remove('active'));
+    btn.classList.add('active');
+    PRICE_CENTS    = parseInt(btn.dataset.cents, 10);
+    ACTIVE_SIZE    = btn.dataset.size;
+    ACTIVE_VARIANT = btn.dataset.variant;
+    document.getElementById('pdpPrice').textContent      = euro(PRICE_CENTS);
+    document.getElementById('subPriceOne').textContent   = euro(PRICE_CENTS);
+    document.getElementById('subPriceStrike').textContent= euro(PRICE_CENTS);
+    document.getElementById('subPriceSave').textContent  = euro(Math.round(PRICE_CENTS * SUB_DISCOUNT));
+    const vol = document.getElementById('pdpVol');
+    if (vol) vol.textContent = ACTIVE_SIZE;
+    updateAddLabel();
+  });
+});
+
+const PDP_LBL = {
+  "addToCart": {
+    "en": "Add to cart",
+    "fr": "Ajouter au panier",
+    "it": "Aggiungi al carrello",
+    "de": "In den Warenkorb"
+  },
+  "subscribe": {
+    "en": "Subscribe",
+    "fr": "S'abonner",
+    "it": "Abbonati",
+    "de": "Abonnieren"
+  },
+  "every": {
+    "en": "every",
+    "fr": "tous les",
+    "it": "ogni",
+    "de": "alle"
+  },
+  "month": {
+    "en": "month",
+    "fr": "mois",
+    "it": "mese",
+    "de": "Monat"
+  },
+  "months": {
+    "en": "months",
+    "fr": "mois",
+    "it": "mesi",
+    "de": "Monate"
+  }
+};
 function updateAddLabel(){
-  const total = (isSubscription ? PRICE_SUB : PRICE_FULL) * qty;
+  const L = window.__lang || 'en';
+  const t = k => (PDP_LBL[k] && PDP_LBL[k][L]) || PDP_LBL[k].en;
+  const unitPrice = isSubscription ? Math.round(PRICE_CENTS * SUB_DISCOUNT) : PRICE_CENTS;
+  const total = unitPrice * qty;
+  const unit = freqMonths > 1 ? t('months') : t('month');
   const lbl = isSubscription
-    ? `Subscribe — €${total} every ${freqMonths} month${freqMonths>1?'s':''}`
-    : `Add to cart — €${total}`;
+    ? `${t('subscribe')} — ${euro(total)} ${t('every')} ${freqMonths} ${unit}`
+    : `${t('addToCart')} — ${euro(total)}`;
   document.querySelector('#pdpAdd span').textContent = lbl;
 }
+document.addEventListener('langchange', updateAddLabel);
 
 subOpts.forEach(opt => {
   opt.addEventListener('click', (e) => {
@@ -384,23 +461,17 @@ document.querySelectorAll('#pdpFreq button').forEach(b => {
   });
 });
 
-// qty — site.js reads data-qty on [data-add]
+// qty handlers (re-bound to also refresh label)
 let qty = 1;
-const pdpAdd = document.getElementById('pdpAdd');
 const qtyEl = document.getElementById('qty');
-function syncQty(){
-  pdpAdd.dataset.qty = String(qty);
-  updateAddLabel();
-}
-document.getElementById('qtyUp').addEventListener('click', () => { qty++; qtyEl.textContent = qty; syncQty(); });
-document.getElementById('qtyDown').addEventListener('click', () => { if(qty>1){ qty--; qtyEl.textContent = qty; syncQty(); } });
-pdpAdd.addEventListener('click', (e) => {
-  if(!isSubscription) return;
-  e.stopImmediatePropagation();
-  toast('Subscription started — every ' + freqMonths + ' month' + (freqMonths>1?'s':''));
-  addToCart('victory-rouge', qty);
+document.getElementById('qtyUp').addEventListener('click', () => { qty++; qtyEl.textContent = qty; updateAddLabel(); });
+document.getElementById('qtyDown').addEventListener('click', () => { if(qty>1){qty--; qtyEl.textContent = qty; updateAddLabel();} });
+document.getElementById('pdpAdd').addEventListener('click', () => {
+  const unitPrice = isSubscription ? Math.round(PRICE_CENTS * SUB_DISCOUNT) : PRICE_CENTS;
+  if (isSubscription) toast('Subscription — every ' + freqMonths + ' month' + (freqMonths>1?'s':''));
+  addToCart('victory-rouge', qty, { size: ACTIVE_SIZE, price: unitPrice, variant: ACTIVE_VARIANT });
 });
-syncQty();
+updateAddLabel();
 </script>
 
 </body>
