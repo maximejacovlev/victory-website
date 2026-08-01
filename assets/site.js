@@ -7,7 +7,7 @@ const PRODUCTS = {
     title: 'Victory Rosé',
     sub:   'St. Tropez',
     price: 1790,
-    variant: '40123456789',
+    shopifyHandle: 'rose',
     image: 'assets/rose-1.png',
     href: 'products/rose.html'
   },
@@ -15,7 +15,7 @@ const PRODUCTS = {
     title: 'Victory Gin',
     sub:   'London Dry',
     price: 2990,
-    variant: '40123456790',
+    shopifyHandle: 'gin',
     image: 'assets/gin-1.png',
     href: 'products/gin.html'
   },
@@ -23,7 +23,7 @@ const PRODUCTS = {
     title: 'Victory Rouge',
     sub:   'St. Tropez',
     price: 2990,
-    variant: '40123456791',
+    shopifyHandle: 'rouge',
     image: 'assets/rouge-1.png',
     href: 'products/rouge.html'
   },
@@ -31,13 +31,12 @@ const PRODUCTS = {
     title: 'Victory Blanc',
     sub:   'Sancerre',
     price: 2990,
-    variant: '40123456792',
+    shopifyHandle: 'blanc',
     image: 'assets/blanc-1.png',
     href: 'products/blanc.html'
   }
 };
 
-// allow product pages (subfolder) to fix asset paths
 function rebasePaths(prefix){
   Object.values(PRODUCTS).forEach(p => {
     if(!p.image.startsWith(prefix)) p.image = prefix + p.image;
@@ -45,89 +44,104 @@ function rebasePaths(prefix){
   });
 }
 
-const cart = JSON.parse(localStorage.getItem('victory-cart') || '[]');
-function persistCart(){ localStorage.setItem('victory-cart', JSON.stringify(cart)); }
-
-async function addToShopifyCart(variantId, qty){
-  // Replace with: fetch('/cart/add.js', {...})
-  console.log('[Shopify-stub] POST /cart/add.js', {id: variantId, quantity: qty});
-  return { ok:true };
-}
-
 const $  = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => [...r.querySelectorAll(s)];
 
 function fmt(cents){ return '€' + (cents/100).toFixed(2).replace('.', ','); }
 
-// A cart line is {id, qty, size, price}. `size` + `price` are optional and
-// only set when a product page picked a non-default format.
-function lineKey(l){ return l.id + '::' + (l.size || ''); }
-function linePrice(l){ return l.price != null ? l.price : (PRODUCTS[l.id]?.price || 0); }
-function lineSub(l){
-  const p = PRODUCTS[l.id];
-  return l.size ? (p ? p.sub + ' · ' + l.size : l.size) : (p ? p.sub : '');
+function shopifyReady(){
+  return typeof VictoryShopify !== 'undefined';
 }
 
-function renderCart(){
+async function renderCart(){
   const body = $('#drawerBody');
   const foot = $('#drawerFoot');
-  const count = cart.reduce((s,l)=>s+l.qty,0);
-  const cc = $('#cartCount'); if(cc) cc.textContent = count;
   if(!body) return;
 
-  if(!cart.length){
+  if (!shopifyReady()) {
+    const cc = $('#cartCount'); if(cc) cc.textContent = '0';
     body.innerHTML = `<div class="cart-empty"><p>Empty for now.</p><small>Add a bottle and it will rest here.</small></div>`;
     if (window.translateNode && window.__lang) translateNode(body, window.__lang);
     if(foot) foot.style.display = 'none';
     return;
   }
-  if(foot) foot.style.display = '';
-  body.innerHTML = cart.map(line => {
-    const p = PRODUCTS[line.id]; if(!p) return '';
-    return `
-      <div class="cart-item">
-        <div class="thumb"><img src="${p.image}" alt=""></div>
-        <div>
-          <div class="name">${p.title}</div>
-          <div class="meta">${lineSub(line)}</div>
-          <div class="qty">
-            <button onclick="changeQty('${lineKey(line)}', -1)" aria-label="Decrease">−</button>
-            <span>${line.qty}</span>
-            <button onclick="changeQty('${lineKey(line)}', 1)" aria-label="Increase">+</button>
+
+  try {
+    const summary = await VictoryShopify.getCartSummary();
+    const cc = $('#cartCount'); if(cc) cc.textContent = summary.count;
+
+    if(!summary.lines.length){
+      body.innerHTML = `<div class="cart-empty"><p>Empty for now.</p><small>Add a bottle and it will rest here.</small></div>`;
+      if (window.translateNode && window.__lang) translateNode(body, window.__lang);
+      if(foot) foot.style.display = 'none';
+      return;
+    }
+
+    if(foot) foot.style.display = '';
+    body.innerHTML = summary.lines.map(line => {
+      const meta = line.variantTitle || '';
+      const img = line.image || '';
+      const unitCents = Math.round(parseFloat(line.unitPrice) * 100);
+      return `
+        <div class="cart-item">
+          <div class="thumb"><img src="${img}" alt=""></div>
+          <div>
+            <div class="name">${line.title}</div>
+            <div class="meta">${meta}</div>
+            <div class="qty">
+              <button onclick="changeShopifyQty('${line.id}', ${line.quantity - 1})" aria-label="Decrease">−</button>
+              <span>${line.quantity}</span>
+              <button onclick="changeShopifyQty('${line.id}', ${line.quantity + 1})" aria-label="Increase">+</button>
+            </div>
           </div>
+          <div class="price">${fmt(unitCents * line.quantity)}</div>
         </div>
-        <div class="price">${fmt(linePrice(line) * line.qty)}</div>
-      </div>
-    `;
-  }).join('');
+      `;
+    }).join('');
 
-  const total = cart.reduce((s,l)=> s + linePrice(l) * l.qty, 0);
-  const ct = $('#cartTotal'); if(ct) ct.textContent = fmt(total);
-  if (window.translateNode && window.__lang) translateNode(body, window.__lang);
+    const ct = $('#cartTotal');
+    if(ct) ct.textContent = VictoryShopify.money(summary.total);
+    if (window.translateNode && window.__lang) translateNode(body, window.__lang);
+  } catch (e) {
+    console.error('[Cart]', e);
+  }
 }
 
-function changeQty(key, delta){
-  const line = cart.find(l => lineKey(l) === key);
-  if(!line) return;
-  line.qty += delta;
-  if(line.qty <= 0) cart.splice(cart.indexOf(line), 1);
-  persistCart();
-  renderCart();
+async function changeShopifyQty(lineItemId, quantity){
+  if (!shopifyReady()) return;
+  try {
+    await VictoryShopify.changeLineQuantity(lineItemId, quantity);
+    await renderCart();
+  } catch (e) {
+    toast('Couldn\'t update cart');
+    console.error(e);
+  }
 }
+window.changeShopifyQty = changeShopifyQty;
 
 async function addToCart(id, qty=1, opts={}){
   const p = PRODUCTS[id];
   if(!p) return;
-  const size  = opts.size || null;
-  const price = opts.price != null ? opts.price : p.price;
-  const key   = id + '::' + (size || '');
-  const line  = cart.find(l => lineKey(l) === key);
-  if(line) line.qty += qty; else cart.push({id, qty, size, price});
-  await addToShopifyCart(opts.variant || p.variant, qty);
-  persistCart();
-  renderCart();
-  openDrawer();
-  toast(`${p.title} — ${typeof t === 'function' ? t('added') : 'added'}`);
+
+  if (!shopifyReady()) {
+    toast('Shop unavailable');
+    return;
+  }
+
+  try {
+    const handle = p.shopifyHandle;
+    const size = opts.size || null;
+    const { variant } = await VictoryShopify.addLineItemByHandle(handle, size, qty);
+    await renderCart();
+    openDrawer();
+    const sizeLabel = variant.title && variant.title !== 'Default Title'
+      ? ` · ${variant.title} cl`
+      : '';
+    toast(`${p.title}${sizeLabel} — ${typeof t === 'function' ? t('added') : 'added'}`);
+  } catch (e) {
+    toast(e.message || 'Couldn\'t add to cart');
+    console.error('[addToCart]', e);
+  }
 }
 
 function openDrawer(){ $('#drawer')?.classList.add('show'); $('#scrim')?.classList.add('show'); }
@@ -140,7 +154,6 @@ function toast(msg){
   const el = $('#toast');
   if(!el) return;
   el.textContent = typeof t === 'function' ? t(msg) : msg;
-  // if full msg wasn't a dict key, leave as-is (t returns key)
   if (typeof t === 'function' && t(msg) === msg && msg.includes(' — ')) {
     // already composed
   }
@@ -149,8 +162,26 @@ function toast(msg){
   toastT = setTimeout(()=>el.classList.remove('show'), 2200);
 }
 
-function goToCheckout(){
-  toast('Redirecting to Shopify checkout…');
+async function goToCheckout(){
+  if (!shopifyReady()) {
+    toast('Shop unavailable — reload via http://localhost:3000');
+    return;
+  }
+  const btn = $('#checkoutBtn');
+  if (btn) btn.disabled = true;
+  try {
+    const summary = await VictoryShopify.getCartSummary();
+    if (!summary.count || !summary.checkoutUrl) {
+      toast('Cart is empty — add a bottle first');
+      return;
+    }
+    window.location.assign(summary.checkoutUrl);
+  } catch (e) {
+    toast(e.message || 'Checkout unavailable');
+    console.error('[checkout]', e);
+  } finally {
+    if (btn) btn.disabled = false;
+  }
 }
 window.goToCheckout = goToCheckout;
 
@@ -166,7 +197,6 @@ function wireUi(){
   });
   $('#checkoutBtn')?.addEventListener('click', goToCheckout);
 
-  // reveal on scroll
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }

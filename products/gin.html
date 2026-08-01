@@ -41,7 +41,7 @@
 .add-btn:hover .plus{transform:rotate(90deg)}
 </style>
 </head>
-<body>
+<body data-shopify-handle="gin">
 
 <header class="nav solid" id="nav" data-screen-label="00 Nav">
   <div class="nav-left">
@@ -100,7 +100,7 @@
       <div class="pdp-variants" id="pdpVariants" data-no-i18n>
         <span class="k">Format</span>
         <div class="pdp-var-grid">
-          <button class="pdp-var active" data-size="50cl" data-cents="2990" data-variant="40123456790">
+          <button class="pdp-var active" data-size="50cl" data-cents="2990">
             <span class="size">50cl</span>
             <span class="fmt">Bouteille</span>
             <span class="amt">€29,90</span>
@@ -348,6 +348,8 @@
 <div class="toast" id="toast"></div>
 
 <script src="../assets/i18n.js"></script>
+<script src="../assets/shopify-storefront.js"></script>
+<script src="../assets/pdp-shopify.js"></script>
 <script src="../assets/site.js"></script>
 <script>
 // asset paths in PRODUCTS need parent prefix for product pages
@@ -468,7 +470,7 @@ document.getElementById('pdpAdd').addEventListener('click', () => {
     const unit = freqMonths > 1 ? (PDP_LBL.months[L] || 'months') : (PDP_LBL.month[L] || 'month');
     toast(sub + ' — ' + every + ' ' + freqMonths + ' ' + unit);
   }
-  addToCart('victory-gin', qty, { size: ACTIVE_SIZE, price: unitPrice, variant: ACTIVE_VARIANT });
+  addToCart('victory-gin', qty, { size: ACTIVE_SIZE });
 });
 updateAddLabel();
 </script>

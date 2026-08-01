@@ -41,7 +41,7 @@
 .add-btn:hover .plus{transform:rotate(90deg)}
 </style>
 </head>
-<body>
+<body data-shopify-handle="rose">
 
 <header class="nav solid" id="nav" data-screen-label="00 Nav">
   <div class="nav-left">
@@ -100,24 +100,30 @@
       <div class="pdp-variants" id="pdpVariants" data-no-i18n>
         <span class="k">Format</span>
         <div class="pdp-var-grid">
-          <button class="pdp-var active" data-size="75cl" data-cents="1790" data-variant="40123456789">
+          <button class="pdp-var active" data-size="75cl" data-cents="1790">
             <span class="size">75cl</span>
             <span class="fmt">Bouteille</span>
             <span class="amt">€17,90</span>
             <span class="per">€23,87 / L</span>
           </button>
-          <button class="pdp-var" data-size="150cl" data-cents="3990" data-variant="40123456793">
+          <button class="pdp-var" data-size="150cl" data-cents="3990">
             <span class="tagline">Popular</span>
             <span class="size">150cl</span>
             <span class="fmt">Magnum</span>
             <span class="amt">€39,90</span>
             <span class="per">€26,60 / L</span>
           </button>
-          <button class="pdp-var" data-size="300cl" data-cents="12990" data-variant="40123456794">
+          <button class="pdp-var" data-size="300cl" data-cents="12990">
             <span class="size">300cl</span>
             <span class="fmt">Jéroboam</span>
             <span class="amt">€129,90</span>
             <span class="per">€43,30 / L</span>
+          </button>
+          <button class="pdp-var" data-size="600cl" data-cents="29590">
+            <span class="size">600cl</span>
+            <span class="fmt">Impérial</span>
+            <span class="amt">€295,90</span>
+            <span class="per">€49,32 / L</span>
           </button>
         </div>
       </div>
@@ -361,6 +367,8 @@
 <div class="toast" id="toast"></div>
 
 <script src="../assets/i18n.js"></script>
+<script src="../assets/shopify-storefront.js"></script>
+<script src="../assets/pdp-shopify.js"></script>
 <script src="../assets/site.js"></script>
 <script>
 // asset paths in PRODUCTS need parent prefix for product pages
@@ -481,7 +489,7 @@ document.getElementById('pdpAdd').addEventListener('click', () => {
     const unit = freqMonths > 1 ? (PDP_LBL.months[L] || 'months') : (PDP_LBL.month[L] || 'month');
     toast(sub + ' — ' + every + ' ' + freqMonths + ' ' + unit);
   }
-  addToCart('victory-rose', qty, { size: ACTIVE_SIZE, price: unitPrice, variant: ACTIVE_VARIANT });
+  addToCart('victory-rose', qty, { size: ACTIVE_SIZE });
 });
 updateAddLabel();
 </script>
