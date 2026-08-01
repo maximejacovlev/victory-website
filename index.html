@@ -683,7 +683,7 @@
               <div class="kind">Rosé</div>
               <div class="place">St. Tropez</div>
             </div>
-            <div class="hc-foot">„THE ROSÉ ONLY<br>WINNERS DRINK"</div>
+            <div class="hc-foot" data-i18n-html="hc_rose">„THE ROSÉ ONLY<br>WINNERS DRINK"</div>
           </div>
         </div>
       </div>
@@ -694,9 +694,9 @@
             <div class="hc-mid">
               <div class="word">Victory</div>
               <div class="kind" style="font-style:normal; letter-spacing:.16em; text-transform:uppercase; font-size:clamp(22px,2.2vw,28px)">Gin</div>
-              <div class="place">London Dry</div>
+            <div class="place">London</div>
             </div>
-            <div class="hc-foot">„THE GIN ONLY<br>WINNERS DRINK"</div>
+            <div class="hc-foot" data-i18n-html="hc_gin">„THE GIN ONLY<br>WINNERS DRINK"</div>
           </div>
         </div>
       </div>
@@ -709,7 +709,7 @@
               <div class="kind">Rouge</div>
               <div class="place">Made in St. Tropez</div>
             </div>
-            <div class="hc-foot">THE WINE ONLY<br>WINNERS DRINK</div>
+            <div class="hc-foot" data-i18n-html="hc_wine">THE WINE ONLY<br>WINNERS DRINK</div>
           </div>
         </div>
       </div>
@@ -722,7 +722,7 @@
               <div class="kind">Blanc</div>
               <div class="place">Sancerre · Loire</div>
             </div>
-            <div class="hc-foot">THE WINE ONLY<br>WINNERS DRINK</div>
+            <div class="hc-foot" data-i18n-html="hc_wine">THE WINE ONLY<br>WINNERS DRINK</div>
           </div>
         </div>
       </div>
@@ -866,7 +866,7 @@
       <a class="why-card reveal d1" href="products/rose.html">
         <img class="why-img" src="assets/rose-3.png" alt="">
         <span class="why-eyebrow">Why Rosé</span>
-        <span class="why-q">"For the days that turn into <em>nights</em>."</span>
+        <span class="why-q" data-i18n-html="why_rose_q">"For the days that turn into <em>nights</em>."</span>
         <span class="why-bottom">
           <span class="why-name">Victory Rosé · St. Tropez</span>
           <span class="why-arrow" aria-hidden="true">→</span>
@@ -875,7 +875,7 @@
       <a class="why-card reveal d2" href="products/gin.html">
         <img class="why-img" src="assets/gin-3.png" alt="">
         <span class="why-eyebrow">Why Gin</span>
-        <span class="why-q">"The <em>night</em> starts here."</span>
+        <span class="why-q" data-i18n-html="why_gin_q">"The <em>night</em> starts here."</span>
         <span class="why-bottom">
           <span class="why-name">Victory Gin · London Dry</span>
           <span class="why-arrow" aria-hidden="true">→</span>
@@ -884,7 +884,7 @@
       <a class="why-card reveal d3" href="products/rouge.html">
         <img class="why-img" src="assets/rouge-3.png" alt="">
         <span class="why-eyebrow">Why Rouge</span>
-        <span class="why-q">"For those who never <em>settle</em>."</span>
+        <span class="why-q" data-i18n-html="why_rouge_q">"For those who never <em>settle</em>."</span>
         <span class="why-bottom">
           <span class="why-name">Victory Rouge · St. Tropez</span>
           <span class="why-arrow" aria-hidden="true">→</span>
@@ -893,7 +893,7 @@
       <a class="why-card reveal d4" href="products/blanc.html">
         <img class="why-img" src="assets/blanc-3.png" alt="">
         <span class="why-eyebrow">Why Blanc</span>
-        <span class="why-q">"Stillness tastes like <em>this</em>."</span>
+        <span class="why-q" data-i18n-html="why_blanc_q">"Stillness tastes like <em>this</em>."</span>
         <span class="why-bottom">
           <span class="why-name">Victory Blanc · Sancerre</span>
           <span class="why-arrow" aria-hidden="true">→</span>
@@ -1172,7 +1172,7 @@
       <span>Subtotal</span>
       <span class="v" id="cartTotal">€0</span>
     </div>
-    <button class="checkout-btn" onclick="toast('Redirecting to Shopify checkout…')">Checkout — Shopify</button>
+    <button type="button" class="checkout-btn" id="checkoutBtn">Checkout</button>
     <div style="font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.45; margin-top:14px; text-align:center">Shipping &amp; taxes calculated at checkout</div>
   </div>
 </aside>
@@ -1195,8 +1195,8 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="assets/site.js"></script>
 <script src="assets/i18n.js"></script>
+<script src="assets/site.js"></script>
 <script>
 // Nav solid-on-scroll
 const nav  = document.getElementById('nav');

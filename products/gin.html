@@ -93,7 +93,7 @@
       <div class="pdp-meta-row">
         <span><b><span id="pdpVol" data-no-i18n>50cl</span></b></span>
         <span><b>44%</b> abv</span>
-        <span>France</span>
+        <span>London</span>
         <span>Juniper · Iris · Thyme · Citrus</span>
       </div>
 
@@ -181,7 +181,7 @@
       <p>Tonic &amp; cucumber, oysters, the first drink of the evening.</p>
       <p style="margin-top:14px"><strong>Serve at</strong> — Over ice in a copa glass with cucumber &amp; rosemary.</p>
       <div class="pdp-notes">
-        <div class="pdp-note"><span class="k">Region</span><span class="v">France</span></div>
+        <div class="pdp-note"><span class="k">Region</span><span class="v">London</span></div>
         <div class="pdp-note"><span class="k">Volume</span><span class="v">500ml</span></div>
         <div class="pdp-note"><span class="k">ABV</span><span class="v">44%</span></div>
         <div class="pdp-note"><span class="k">Grape / Botanicals</span><span class="v">Juniper · Iris · Thyme · Citrus</span></div>
@@ -194,7 +194,7 @@
 <section class="pdp-why pdp-why--gin" data-screen-label="03 Why">
   <div class="container reveal">
     <div class="eyebrow">Why Gin</div>
-    <div class="q">"The <em>night</em> starts here."</div>
+    <div class="q" data-i18n-html="pdp_gin_q">"The <em>night</em> starts here."</div>
     <div class="author">— Maison Victory · London Dry</div>
   </div>
 </section>
@@ -219,7 +219,7 @@
               <div class="product-sub">St. Tropez · 75cl</div>
             </a>
             <div class="product-row">
-              <div class="product-price">€36</div>
+              <div class="product-price"><span>from</span> 17,90€</div>
               <button class="add-btn" data-add="victory-rose">
                 <span class="plus">+</span><span>Add</span>
               </button>
@@ -237,7 +237,7 @@
               <div class="product-sub">St. Tropez · 75cl</div>
             </a>
             <div class="product-row">
-              <div class="product-price">€42</div>
+              <div class="product-price"><span>from</span> 29,90€</div>
               <button class="add-btn" data-add="victory-rouge">
                 <span class="plus">+</span><span>Add</span>
               </button>
@@ -255,7 +255,7 @@
               <div class="product-sub">Sancerre · 75cl</div>
             </a>
             <div class="product-row">
-              <div class="product-price">€40</div>
+              <div class="product-price"><span>from</span> 29,90€</div>
               <button class="add-btn" data-add="victory-blanc">
                 <span class="plus">+</span><span>Add</span>
               </button>
@@ -324,7 +324,7 @@
       <span>Subtotal</span>
       <span class="v" id="cartTotal">€0</span>
     </div>
-    <button class="checkout-btn" onclick="toast('Redirecting to Shopify checkout…')">Checkout — Shopify</button>
+    <button type="button" class="checkout-btn" id="checkoutBtn">Checkout</button>
     <div style="font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.45; margin-top:14px; text-align:center">Shipping &amp; taxes calculated at checkout</div>
   </div>
 </aside>
@@ -347,8 +347,8 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="../assets/site.js"></script>
 <script src="../assets/i18n.js"></script>
+<script src="../assets/site.js"></script>
 <script>
 // asset paths in PRODUCTS need parent prefix for product pages
 rebasePaths('../');
@@ -461,7 +461,13 @@ document.getElementById('qtyUp').addEventListener('click', () => { qty++; qtyEl.
 document.getElementById('qtyDown').addEventListener('click', () => { if(qty>1){qty--; qtyEl.textContent = qty; updateAddLabel();} });
 document.getElementById('pdpAdd').addEventListener('click', () => {
   const unitPrice = isSubscription ? Math.round(PRICE_CENTS * SUB_DISCOUNT) : PRICE_CENTS;
-  if (isSubscription) toast('Subscription — every ' + freqMonths + ' month' + (freqMonths>1?'s':''));
+  if (isSubscription) {
+    const L = window.__lang || 'en';
+    const sub = (PDP_LBL.subscribe[L] || 'Subscribe');
+    const every = ({en:'every', fr:'tous les', it:'ogni', de:'alle'})[L] || 'every';
+    const unit = freqMonths > 1 ? (PDP_LBL.months[L] || 'months') : (PDP_LBL.month[L] || 'month');
+    toast(sub + ' — ' + every + ' ' + freqMonths + ' ' + unit);
+  }
   addToCart('victory-gin', qty, { size: ACTIVE_SIZE, price: unitPrice, variant: ACTIVE_VARIANT });
 });
 updateAddLabel();

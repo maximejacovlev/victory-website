@@ -127,7 +127,7 @@ async function addToCart(id, qty=1, opts={}){
   persistCart();
   renderCart();
   openDrawer();
-  toast(`${p.title} — added`);
+  toast(`${p.title} — ${typeof t === 'function' ? t('added') : 'added'}`);
 }
 
 function openDrawer(){ $('#drawer')?.classList.add('show'); $('#scrim')?.classList.add('show'); }
@@ -139,11 +139,20 @@ let toastT;
 function toast(msg){
   const el = $('#toast');
   if(!el) return;
-  el.textContent = msg;
+  el.textContent = typeof t === 'function' ? t(msg) : msg;
+  // if full msg wasn't a dict key, leave as-is (t returns key)
+  if (typeof t === 'function' && t(msg) === msg && msg.includes(' — ')) {
+    // already composed
+  }
   el.classList.add('show');
   clearTimeout(toastT);
   toastT = setTimeout(()=>el.classList.remove('show'), 2200);
 }
+
+function goToCheckout(){
+  toast('Redirecting to Shopify checkout…');
+}
+window.goToCheckout = goToCheckout;
 
 function wireUi(){
   $('#cartBtn')?.addEventListener('click', openDrawer);
@@ -155,6 +164,7 @@ function wireUi(){
   $$('[data-add]').forEach(btn => {
     btn.addEventListener('click', () => addToCart(btn.dataset.add, parseInt(btn.dataset.qty || '1', 10)));
   });
+  $('#checkoutBtn')?.addEventListener('click', goToCheckout);
 
   // reveal on scroll
   const io = new IntersectionObserver((entries) => {
@@ -168,3 +178,6 @@ function wireUi(){
 }
 
 document.addEventListener('DOMContentLoaded', wireUi);
+document.addEventListener('langchange', () => {
+  renderCart();
+});
